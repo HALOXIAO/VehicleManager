@@ -1,5 +1,6 @@
 package com.vehicle.container;
 
+import com.vehicle.container.properties.TomcatProperties;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.catalina.connector.Connector;
@@ -24,9 +25,11 @@ public class TomcatContainer {
 
     }
 
-    private void initTomcat() {
+    private void initTomcat() throws IOException {
         tomcat = new Tomcat();
         Connector connector = tomcat.getConnector();
+        TomcatProperties properties = new TomcatProperties();
+        connector.setPort(Integer.parseInt(properties.getPort()));
     }
 
 }
