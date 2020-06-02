@@ -16,9 +16,7 @@ import java.util.stream.Collectors;
 
 /**
  * 类操作工具类
- *
- * @author zzzzbw
- * @since 2018/5/29 12:27
+ * @author HALO
  */
 @Slf4j
 public final class ClassUtil {
