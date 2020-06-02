@@ -7,4 +7,7 @@ import com.vehicle.framework.core.annotation.Component;
  **/
 @Component
 public class test {
+    public void asd(){
+        System.out.println("i am test");
+    }
 }

@@ -25,4 +25,18 @@
 hs_err_pid*
 
 # IDEA file
-.idea
+!/.idea/
+.idea/libraries/Maven__org_apache_tomcat_embed_tomcat_embed_core_9_0_33.xml
+.idea/libraries/Maven__org_apache_tomcat_embed_tomcat_embed_websocket_9_0_33.xml
+.idea/libraries/Maven__org_apache_tomcat_tomcat_annotations_api_9_0_33.xml
+out/artifacts/VehicleManager_war_exploded/META-INF/
+out/artifacts/VehicleManager_war_exploded/WEB-INF/classes/application.properties
+out/artifacts/VehicleManager_war_exploded/WEB-INF/web.xml
+out/artifacts/VehicleManager_war_exploded/index.jsp
+out/artifacts/service/WEB-INF/classes/application.properties
+out/artifacts/service/WEB-INF/web.xml
+out/artifacts/service/index.jsp
+target/classes/application.properties
+target/generated-sources/
+target/generated-test-sources/
+web/index.jsp

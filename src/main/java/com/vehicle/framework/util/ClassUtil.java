@@ -16,6 +16,7 @@ import java.util.stream.Collectors;
 
 /**
  * 类操作工具类
+ *
  * @author HALO
  */
 @Slf4j
@@ -66,7 +67,7 @@ public final class ClassUtil {
     public static <T> T newInstance(String className) {
         try {
             Class<?> clazz = loadClass(className);
-            return (T) clazz.newInstance();
+            return (T) clazz.getDeclaredConstructor().newInstance();
         } catch (Exception e) {
             log.error("newInstance error", e);
             throw new RuntimeException(e);
