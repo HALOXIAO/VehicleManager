@@ -6,7 +6,7 @@
 
     <servlet>
         <servlet-name>DispatcherServlet</servlet-name>
-        <servlet-class>com.vehicle.framework.DispatcherServlet</servlet-class>
+        <servlet-class>com.vehicle.framework.mvc.DispatcherServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>

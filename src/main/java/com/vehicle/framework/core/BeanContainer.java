@@ -108,6 +108,7 @@ public class BeanContainer {
      * 自动注入功能
      * @param packageUrl 扫描的包路径
      * */
+    @Deprecated
     //  TODO Autowired
     public void autowired(String packageUrl) {
         if (!isLoad) {
