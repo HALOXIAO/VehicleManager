@@ -16,7 +16,7 @@ import java.io.PrintWriter;
  * @author HALOXIAO
  **/
 @WebFilter(urlPatterns = "/*")
-public class AuthenticationFilter implements Filter {
+public class PreFilter02_Authentication implements Filter {
     @Override
     public void doFilter(ServletRequest res, ServletResponse rep, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) res;
