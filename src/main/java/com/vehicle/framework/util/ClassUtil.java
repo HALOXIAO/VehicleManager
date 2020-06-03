@@ -15,8 +15,6 @@ import java.util.jar.JarEntry;
 import java.util.stream.Collectors;
 
 /**
- * 类操作工具类
- *
  * @author HALO
  */
 @Slf4j
@@ -34,8 +32,6 @@ public final class ClassUtil {
 
     /**
      * 获取classLoader
-     *
-     * @return 当前ClassLoader
      */
     public static ClassLoader getClassLoader() {
         return Thread.currentThread().getContextClassLoader();
@@ -130,7 +126,7 @@ public final class ClassUtil {
         URL url = getClassLoader()
                 .getResource(basePackage.replace(".", "/"));
         if (null == url) {
-            throw new RuntimeException("无法获取项目路径文件");
+            throw new RuntimeException("Unable to get project path file");
         }
 
         try {
@@ -171,7 +167,7 @@ public final class ClassUtil {
                 .replace("/", ".")
                 .replace("\\", ".")
                 .replace(".class", "");
-        // 如果class在根目录要去除最前面的.
+        // 如果class在根目录要去除最前面的"."
         className = className.charAt(0) == '.' ? className.substring(1) : className;
         return loadClass(className);
     }
