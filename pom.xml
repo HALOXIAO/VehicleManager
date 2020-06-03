@@ -11,7 +11,7 @@
     <properties>
         <org.mapstruct.version>1.3.0.Final</org.mapstruct.version>
         <java.version>8</java.version>
-        <tomcat.version>9.0.33</tomcat.version>
+        <tomcat.version>9.0.35</tomcat.version>
     </properties>
 
 
