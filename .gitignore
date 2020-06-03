@@ -39,4 +39,4 @@ out/artifacts/service/index.jsp
 target/classes/application.properties
 target/generated-sources/
 target/generated-test-sources/
-web/index.jsp
+src/main/webapp/index.jsp

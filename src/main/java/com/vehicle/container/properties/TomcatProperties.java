@@ -18,19 +18,22 @@ public class TomcatProperties {
 
     private String code = "UTF-8";
 
-    private String hinderUrl = "/";
+    private String hinderUrl = "";
 
-    private String shiftUrl = "/";
+    private String shiftUrl = "";
 
-    private final Properties properties;
+    private Integer cookieCount=1;
+
 
     public TomcatProperties() throws IOException {
-        properties = new Properties();
+        Properties properties = new Properties();
         properties.load(new FileInputStream(this.getClass().getResource("/application.properties").getPath()));
         port = (String) properties.getOrDefault("tomcat.server.port", port);
         code = (String) properties.getOrDefault("tomcat.server.code", code);
         hinderUrl = (String) properties.getOrDefault("tomcat.server.hinder-url", hinderUrl);
         shiftUrl = (String) properties.getOrDefault("tomcat.server.shift-utl", shiftUrl);
+        cookieCount = (Integer) properties.getOrDefault("tomcat.server.cookie-count", cookieCount);
+
     }
 
 
