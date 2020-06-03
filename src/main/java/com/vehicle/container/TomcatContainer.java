@@ -28,10 +28,8 @@ import java.util.Properties;
 public class TomcatContainer {
 
     private Tomcat tomcat;
-    private HttpServlet httpServlet = new test();
 
-
-    public TomcatContainer() throws IOException, LifecycleException {
+    public void startUp() throws IOException, LifecycleException {
         initTomcat();
         tomcat.start();
         tomcat.getServer().await();

@@ -1,7 +1,6 @@
 package com.vehicle;
 
 import com.vehicle.container.TomcatContainer;
-import com.vehicle.container.test;
 import org.apache.catalina.LifecycleException;
 import org.junit.Test;
 

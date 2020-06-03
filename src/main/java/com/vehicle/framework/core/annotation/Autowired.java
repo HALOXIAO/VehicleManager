@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 /**
  * @author HALOXIAO
  **/
-@Target(ElementType.TYPE)
+@Target({ElementType.FIELD, ElementType.CONSTRUCTOR})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Controller {
+public @interface Autowired {
 }
