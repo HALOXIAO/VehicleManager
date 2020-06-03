@@ -3,22 +3,12 @@ package com.vehicle.container;
 import com.vehicle.container.properties.TomcatProperties;
 import lombok.Getter;
 import lombok.Setter;
-import org.apache.catalina.Context;
-import org.apache.catalina.Host;
 import org.apache.catalina.LifecycleException;
-import org.apache.catalina.Wrapper;
 import org.apache.catalina.connector.Connector;
 import org.apache.catalina.startup.Tomcat;
 
-import javax.servlet.Servlet;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
-import java.io.Writer;
-import java.util.Properties;
 
 /**
  * @author HALOXIAO
@@ -37,7 +27,6 @@ public class TomcatContainer {
 
     private void initTomcat() throws IOException {
         TomcatProperties properties = new TomcatProperties();
-
         String userDir = System.getProperty("user.dir"); // 项目目录
         String tomcatBaseDir = userDir + File.separatorChar + "tomcat";
         String webappDir = userDir + File.separatorChar + "target" + File.separatorChar + "classes";
@@ -46,10 +35,9 @@ public class TomcatContainer {
         Connector connector = new Connector();
         connector.setPort(Integer.parseInt(properties.getPort()));
         connector.setURIEncoding(properties.getCode());
-        connector.setMaxCookieCount(properties.getCookieCount());
+        connector.setMaxCookieCount(properties.getMaxCookieCount());
         tomcat.getService().addConnector(connector);
         tomcat.addWebapp("/", webappDir);
-
     }
 
 }

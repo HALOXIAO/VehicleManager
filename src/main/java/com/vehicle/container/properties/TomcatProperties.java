@@ -1,10 +1,8 @@
 package com.vehicle.container.properties;
 
 import lombok.Getter;
-import lombok.Setter;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Properties;
 
@@ -13,16 +11,18 @@ import java.util.Properties;
  **/
 @Getter
 public class TomcatProperties {
-
+    /**
+     * 端口
+     */
     private String port = "8080";
-
+    /**
+     * 编码
+     */
     private String code = "UTF-8";
-
-    private String hinderUrl = "";
-
-    private String shiftUrl = "";
-
-    private Integer cookieCount=1;
+    /**
+     * 最大cookie数量
+     */
+    private Integer maxCookieCount = 1;
 
 
     public TomcatProperties() throws IOException {
@@ -30,9 +30,7 @@ public class TomcatProperties {
         properties.load(new FileInputStream(this.getClass().getResource("/application.properties").getPath()));
         port = (String) properties.getOrDefault("tomcat.server.port", port);
         code = (String) properties.getOrDefault("tomcat.server.code", code);
-        hinderUrl = (String) properties.getOrDefault("tomcat.server.hinder-url", hinderUrl);
-        shiftUrl = (String) properties.getOrDefault("tomcat.server.shift-utl", shiftUrl);
-        cookieCount = (Integer) properties.getOrDefault("tomcat.server.cookie-count", cookieCount);
+        maxCookieCount = (Integer) properties.getOrDefault("tomcat.server.cookie-count", maxCookieCount);
 
     }
 
