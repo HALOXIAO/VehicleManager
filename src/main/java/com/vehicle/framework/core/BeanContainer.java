@@ -71,7 +71,10 @@ public class BeanContainer {
     public Set<Class<?>> getBeansByAnnotation(Class<? extends Annotation> annotation) {
         return application.keySet().stream().filter(
                 clz -> {
-                    return clz.isAssignableFrom(annotation);
+                    if (clz.isAnnotationPresent(annotation)) {
+                        return true;
+                    }
+                    return false;
                 }
         ).collect(Collectors.toSet());
     }

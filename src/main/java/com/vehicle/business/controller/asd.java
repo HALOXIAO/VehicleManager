@@ -1,9 +1,10 @@
-package com.vehicle.framework.mvc.render;
+package com.vehicle.business.controller;
 
 import com.alibaba.fastjson.JSON;
-import com.vehicle.framework.mvc.param.RequestChain;
-import lombok.extern.slf4j.Slf4j;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -11,21 +12,18 @@ import java.io.PrintWriter;
 /**
  * @author HALOXIAO
  **/
-@Slf4j
-public class JsonRender implements Render {
+public class asd extends HttpServlet {
 
     @Override
-    public void handler(RequestChain requestChain) {
-        HttpServletResponse response = requestChain.getHttpServletResponse();
+    protected void doGet(HttpServletRequest req, HttpServletResponse response) throws ServletException, IOException {
         response.setStatus(HttpServletResponse.SC_OK);
         response.setContentType("application/json; charset=UTF-8");
         response.setCharacterEncoding("UTF-8");
         try (PrintWriter printWriter = response.getWriter()) {
-            printWriter.write(JSON.toJSONString(requestChain.getResultBean()));
+            printWriter.write("HelloWorld");
             printWriter.flush();
         } catch (IOException e) {
-            log.error("can not PrintWriter", e);
+            e.printStackTrace();
         }
     }
-
 }

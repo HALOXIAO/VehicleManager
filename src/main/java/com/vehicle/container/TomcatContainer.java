@@ -1,10 +1,12 @@
 package com.vehicle.container;
 
 import com.vehicle.container.properties.TomcatProperties;
+import com.vehicle.framework.mvc.DispatcherServlet;
 import lombok.Getter;
 import lombok.Setter;
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.connector.Connector;
+import org.apache.catalina.core.StandardContext;
 import org.apache.catalina.startup.Tomcat;
 
 import java.io.File;
@@ -37,7 +39,9 @@ public class TomcatContainer {
         connector.setURIEncoding(properties.getCode());
         connector.setMaxCookieCount(properties.getMaxCookieCount());
         tomcat.getService().addConnector(connector);
-        tomcat.addWebapp("/", webappDir);
+        StandardContext ctx = (StandardContext) tomcat.addWebapp("/", webappDir);
+        tomcat.addServlet("", "dispatcherServlet", new DispatcherServlet()).setLoadOnStartup(0);
+        ctx.addServletMappingDecoded("/*","dispatcherServlet");
     }
 
 }

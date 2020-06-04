@@ -90,9 +90,12 @@ public class HandlerMapping implements Handler {
     private Object invoke(RequestChain requestChain) throws InvocationTargetException, IllegalAccessException, IOException {
         PathInfo pathInfo = new PathInfo(requestChain.getRequestMethod(), requestChain.getRequestPath());
         ControllerInfo controllerInfo = controllerMap.get(pathInfo);
+        if(controllerInfo==null){
+            return null;
+        }
         Object obj = BeanContainerFactory.getBeanContainer().getBean(controllerInfo.getControllerClz());
         if (controllerInfo.getMethodParameter().size() == 0) {
-           return  controllerInfo.getInvokeMethod().invoke(obj);
+            return controllerInfo.getInvokeMethod().invoke(obj);
         } else {
 //            两种情况，一种requestBody，一种requestParam
             Map<String, Class<?>> parameterMap = controllerInfo.getMethodParameter();

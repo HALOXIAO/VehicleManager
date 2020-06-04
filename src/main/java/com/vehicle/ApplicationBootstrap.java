@@ -11,8 +11,8 @@ import java.io.IOException;
  * @author HALOXIAO
  **/
 public class ApplicationBootstrap {
-    public static void main(String[] args) throws ResourceNotFoundException, IOException, LifecycleException {
-        BeanContainerFactory.getBeanContainer().loadBean(ApplicationBootstrap.class.getPackageName());
+    public static void main(String[] args) throws IOException, LifecycleException {
+        BeanContainerFactory.getBeanContainer().loadBean(ApplicationBootstrap.class.getPackage().getName());
         new TomcatContainer().startUp();
 
     }
