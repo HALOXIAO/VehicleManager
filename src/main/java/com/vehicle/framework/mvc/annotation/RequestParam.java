@@ -9,11 +9,11 @@ import java.lang.annotation.Target;
  * @author HALOXIAO
  **/
 
-@Target({ElementType.METHOD})
+@Target({ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface RequestParam {
 
-    String value() default "";
+    String value() ;
 
     boolean require() default true;
 

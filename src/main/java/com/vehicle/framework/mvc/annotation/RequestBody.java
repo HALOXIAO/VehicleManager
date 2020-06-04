@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
  * @author HALOXIAO
  **/
 
-@Target({ElementType.METHOD})
+@Target({ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 public @interface RequestBody {
 }

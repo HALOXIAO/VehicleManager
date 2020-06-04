@@ -6,6 +6,8 @@ import com.vehicle.framework.mvc.handle.HandlerMapping;
 import com.vehicle.framework.mvc.param.RequestChain;
 import com.vehicle.framework.mvc.render.JsonRender;
 import com.vehicle.framework.mvc.render.Render;
+import com.vehicle.framework.mvc.render.exception.ExceptionRender;
+import com.vehicle.framework.mvc.render.exception.GlobalExceptionRender;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.ServletException;
@@ -26,7 +28,7 @@ public class DispatcherServlet extends HttpServlet {
 
     private final List<Handler> HANDLER = new ArrayList<>();
     private Render resultRender;
-    private final List<Render> EXCEPTION_RENDER = new ArrayList<>();
+    private final List<ExceptionRender> EXCEPTION_RENDER = new ArrayList<>();
 
     @Override
     public void init() throws ServletException {
@@ -34,6 +36,9 @@ public class DispatcherServlet extends HttpServlet {
         HandlerAdapter adapter = new HandlerAdapter();
         HANDLER.add(adapter);
         HANDLER.add(new HandlerMapping(adapter.getControllerClasses()));
+
+
+        EXCEPTION_RENDER.add(new GlobalExceptionRender());
     }
 
 
@@ -55,8 +60,8 @@ public class DispatcherServlet extends HttpServlet {
             } catch (Exception e) {
                 log.error(e.getMessage());
                 if (EXCEPTION_RENDER.iterator().hasNext()) {
-                    Render render = EXCEPTION_RENDER.iterator().next();
-                    render.handler(requestChain);
+                    ExceptionRender render = EXCEPTION_RENDER.iterator().next();
+                    render.handler(requestChain, e);
                 }
             }
         }
