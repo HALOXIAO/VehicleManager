@@ -8,12 +8,8 @@ import java.lang.annotation.Target;
 /**
  * @author HALOXIAO
  **/
-@Target({ElementType.TYPE, ElementType.METHOD})
+
+@Target({ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface RequestMapping {
-
-    String value();
-
-    String method() default "GET";
-
+public @interface RequestBody {
 }
