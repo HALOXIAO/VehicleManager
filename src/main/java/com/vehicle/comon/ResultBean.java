@@ -1,4 +1,4 @@
-package com.vehicle.business.common;
+package com.vehicle.comon;
 
 /**
  * @author HALOXIAO

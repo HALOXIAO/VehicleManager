@@ -1,9 +1,6 @@
 package com.vehicle.framework.core;
 
-import com.vehicle.framework.core.annotation.Autowired;
-import com.vehicle.framework.core.annotation.Component;
-import com.vehicle.framework.core.annotation.Repository;
-import com.vehicle.framework.core.annotation.Service;
+import com.vehicle.framework.core.annotation.*;
 import com.vehicle.framework.exception.ClassNotLoadException;
 import com.vehicle.framework.exception.ResourceNotFoundException;
 import com.vehicle.framework.util.ClassUtil;
@@ -14,6 +11,7 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.stream.Collectors;
 
 
 /**
@@ -28,7 +26,7 @@ public class BeanContainer {
     private boolean isLoad = false;
 
 
-    private static final List<Class<? extends Annotation>> BEAN_ANNOTATION = Arrays.asList(Component.class, Service.class, Repository.class);
+    private static final List<Class<? extends Annotation>> BEAN_ANNOTATION = Arrays.asList(Component.class, Service.class, Repository.class, Controller.class);
     private static final List<Class<? extends Annotation>> WIRED_ANNOTATION = Arrays.asList(Autowired.class);
 
     /**
@@ -70,6 +68,14 @@ public class BeanContainer {
         return application.get(cla);
     }
 
+    public Set<Class<?>> getBeansByAnnotation(Class<? extends Annotation> annotation) {
+        return application.keySet().stream().filter(
+                clz -> {
+                    return clz.isAssignableFrom(annotation);
+                }
+        ).collect(Collectors.toSet());
+    }
+
     /**
      * 返回bean的数量
      *
@@ -106,8 +112,9 @@ public class BeanContainer {
     /**
      * (还没搞完，别调用)
      * 自动注入功能
+     *
      * @param packageUrl 扫描的包路径
-     * */
+     */
     @Deprecated
     //  TODO Autowired
     public void autowired(String packageUrl) {
