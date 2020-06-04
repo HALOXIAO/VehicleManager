@@ -27,8 +27,9 @@ public class DispatcherServlet extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
-        HANDLER.add(new HandlerAdapter());
-        HANDLER.add(new HandlerMapping());
+        HandlerAdapter adapter = new HandlerAdapter();
+        HANDLER.add(adapter);
+        HANDLER.add(new HandlerMapping(adapter.getControllerClasses()));
 
     }
 
@@ -45,13 +46,17 @@ public class DispatcherServlet extends HttpServlet {
         }
     }
 
+
+
+
     private RequestChain assembleRChain(HttpServletRequest request, HttpServletResponse response) {
         String requestPath = request.getServletPath();
         RequestChain requestChain = new RequestChain();
-       return requestChain.setHttpServletRequest(request)
+        return requestChain.setHttpServletRequest(request)
                 .setHttpServletResponse(response)
                 .setRequestMethod(request.getMethod())
                 .setResultBean(null)
                 .setRequestPath(requestPath);
     }
+
 }

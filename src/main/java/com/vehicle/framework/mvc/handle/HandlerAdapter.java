@@ -28,10 +28,15 @@ public class HandlerAdapter implements Handler {
         return true;
     }
 
+    public Set<Class<?>> getControllerClasses(){
+        return controllerApplication;
+    }
 
     private Set<Class<?>> getController() {
         return BeanContainerFactory.getBeanContainer().getBeansByAnnotation(Controller.class);
     }
+
+
 
 }
 
