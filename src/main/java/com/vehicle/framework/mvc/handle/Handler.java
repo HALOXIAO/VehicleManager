@@ -6,5 +6,5 @@ import com.vehicle.framework.mvc.param.RequestChain;
  * @author HALOXIAO
  **/
 public interface Handler {
-    boolean handle(RequestChain requestChain) throws Exception;
+    Object handle(RequestChain requestChain) throws Exception;
 }

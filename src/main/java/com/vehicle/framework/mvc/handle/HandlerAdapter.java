@@ -24,18 +24,17 @@ public class HandlerAdapter implements Handler {
     }
 
     @Override
-    public boolean handle(RequestChain requestChain) throws Exception {
+    public Object handle(RequestChain requestChain) throws Exception {
         return true;
     }
 
-    public Set<Class<?>> getControllerClasses(){
+    public Set<Class<?>> getControllerClasses() {
         return controllerApplication;
     }
 
     private Set<Class<?>> getController() {
         return BeanContainerFactory.getBeanContainer().getBeansByAnnotation(Controller.class);
     }
-
 
 
 }

@@ -15,9 +15,9 @@ import java.io.PrintWriter;
 /**
  * @author HALOXIAO
  **/
-@WebFilter(urlPatterns = "/*")
-public class PreFilter02_Authentication implements Filter {
-    @Override
+//@WebFilter(urlPatterns = "/*")
+public class PreFilter02_Authentication  {
+/*    @Override
     public void doFilter(ServletRequest res, ServletResponse rep, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) res;
         HttpServletResponse response = (HttpServletResponse) rep;
@@ -33,5 +33,5 @@ public class PreFilter02_Authentication implements Filter {
             }
         }
         chain.doFilter(request, response);
-    }
+    }*/
 }

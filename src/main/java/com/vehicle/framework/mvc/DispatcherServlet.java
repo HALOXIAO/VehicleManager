@@ -4,6 +4,7 @@ import com.vehicle.framework.mvc.handle.Handler;
 import com.vehicle.framework.mvc.handle.HandlerAdapter;
 import com.vehicle.framework.mvc.handle.HandlerMapping;
 import com.vehicle.framework.mvc.param.RequestChain;
+import com.vehicle.framework.mvc.render.JsonRender;
 import com.vehicle.framework.mvc.render.Render;
 import lombok.extern.slf4j.Slf4j;
 
@@ -23,14 +24,15 @@ import java.util.List;
 public class DispatcherServlet extends HttpServlet {
 
     private final List<Handler> HANDLER = new ArrayList<>();
-    private final List<Render> RENDER = new ArrayList<>();
+    private Render resultRender;
+    private final List<Render> EXCEPTION_RENDER = new ArrayList<>();
 
     @Override
     public void init() throws ServletException {
+        resultRender = new JsonRender();
         HandlerAdapter adapter = new HandlerAdapter();
         HANDLER.add(adapter);
         HANDLER.add(new HandlerMapping(adapter.getControllerClasses()));
-
     }
 
 
@@ -38,15 +40,28 @@ public class DispatcherServlet extends HttpServlet {
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         RequestChain requestChain = assembleRChain(request, response);
         Iterator<Handler> iterator = HANDLER.iterator();
+        Object obj = null;
         for (; ; ) {
             if (!iterator.hasNext()) {
                 break;
             }
-
+            Handler handler = iterator.next();
+            try {
+                obj = handler.handle(requestChain);
+                if (obj == null) {
+                    throw new RuntimeException("DispatcherServlet exception");
+                }
+            } catch (Exception e) {
+                log.error(e.getMessage());
+                if (EXCEPTION_RENDER.iterator().hasNext()) {
+                    Render render = EXCEPTION_RENDER.iterator().next();
+                    render.handler(requestChain);
+                }
+            }
         }
+        requestChain.setResultBean(obj);
+        resultRender.handler(requestChain);
     }
-
-
 
 
     private RequestChain assembleRChain(HttpServletRequest request, HttpServletResponse response) {

@@ -1,11 +1,9 @@
 package com.vehicle.framework.mvc.render;
 
 import com.alibaba.fastjson.JSON;
-import com.vehicle.framework.mvc.handle.Handler;
 import com.vehicle.framework.mvc.param.RequestChain;
 import lombok.extern.slf4j.Slf4j;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
