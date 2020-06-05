@@ -14,6 +14,11 @@ import java.lang.reflect.InvocationTargetException;
  **/
 public class ApplicationBootstrap {
     public static void main(String[] args) throws IOException, LifecycleException, InvocationTargetException, IllegalAccessException {
+        bootstrap(args);
+    }
+
+
+    private static void bootstrap(String[] args) throws InvocationTargetException, IllegalAccessException, IOException, LifecycleException {
         BeanContainerFactory.getBeanContainer().loadBean(ApplicationBootstrap.class.getPackage().getName());
         new BeanConfiguration();
         new TomcatContainer().startUp();

@@ -24,6 +24,7 @@ import java.util.List;
  * @author HALOXIAO
  **/
 @Slf4j
+@WebServlet("/*")
 public class DispatcherServlet extends HttpServlet {
 
     private final List<Handler> HANDLER = new ArrayList<>();

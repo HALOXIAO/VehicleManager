@@ -10,6 +10,7 @@ import com.vehicle.framework.mvc.annotation.RequestParam;
 import com.vehicle.framework.mvc.module.ControllerInfo;
 import com.vehicle.framework.mvc.module.PathInfo;
 import com.vehicle.framework.mvc.param.RequestChain;
+import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
@@ -25,6 +26,7 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * @author HALOXIAO
  **/
+@Slf4j
 public class HandlerMapping implements Handler {
 
     private final int INIT_SIZE = 256;
@@ -73,6 +75,8 @@ public class HandlerMapping implements Handler {
                             }
                             if (_PCount > 0 && _BCount > 0) {
                                 throw new AnnotationException("@RequestParam and @RequestBody can not be together ");
+                            } else if (_BCount > 1) {
+                                throw new AnnotationException("@RequestBody count max=1");
                             }
                             ControllerInfo controllerInfo = new ControllerInfo(clz, method, methodParameter);
                             PathInfo pathInfo = new PathInfo(method.getDeclaredAnnotation(RequestMapping.class).method(), requestPath);
