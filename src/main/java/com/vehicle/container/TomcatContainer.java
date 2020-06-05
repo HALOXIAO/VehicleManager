@@ -4,6 +4,7 @@ import com.vehicle.container.properties.TomcatProperties;
 import com.vehicle.framework.mvc.DispatcherServlet;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.connector.Connector;
 import org.apache.catalina.core.StandardContext;
@@ -17,13 +18,16 @@ import java.io.IOException;
  **/
 @Getter
 @Setter
+@Slf4j
 public class TomcatContainer {
 
     private Tomcat tomcat;
 
     public void startUp() throws IOException, LifecycleException {
+      log.info("start to init Tomcat");
         initTomcat();
         tomcat.start();
+        log.info("tomcat online");
         tomcat.getServer().await();
     }
 

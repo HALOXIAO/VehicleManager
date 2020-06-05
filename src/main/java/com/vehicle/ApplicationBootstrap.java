@@ -4,6 +4,7 @@ import com.vehicle.container.TomcatContainer;
 import com.vehicle.framework.core.BeanContainerFactory;
 import com.vehicle.framework.core.config.BeanConfiguration;
 import com.vehicle.framework.exception.ResourceNotFoundException;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.catalina.LifecycleException;
 
 import java.io.IOException;
@@ -12,6 +13,7 @@ import java.lang.reflect.InvocationTargetException;
 /**
  * @author HALOXIAO
  **/
+@Slf4j
 public class ApplicationBootstrap {
     public static void main(String[] args) throws IOException, LifecycleException, InvocationTargetException, IllegalAccessException {
         bootstrap(args);

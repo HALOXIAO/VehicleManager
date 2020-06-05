@@ -47,16 +47,21 @@
             <version>3.3.0</version>
         </dependency>
 
+
+
+
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.18.10</version>
         </dependency>
+
         <dependency>
             <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-api</artifactId>
-            <version>1.7.30</version>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.7.29</version>
         </dependency>
+
 
         <dependency>
             <groupId>com.alibaba</groupId>
