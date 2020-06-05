@@ -36,8 +36,6 @@ public class DispatcherServlet extends HttpServlet {
         HandlerAdapter adapter = new HandlerAdapter();
         HANDLER.add(adapter);
         HANDLER.add(new HandlerMapping(adapter.getControllerClasses()));
-
-
         EXCEPTION_RENDER.add(new GlobalExceptionRender());
     }
 

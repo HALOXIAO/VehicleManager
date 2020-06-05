@@ -25,8 +25,7 @@ public class BeanContainer {
     private final Map<Class<?>, Object> fieldApplication = new ConcurrentHashMap<>(INIT_SIZE);
     private boolean isLoad = false;
 
-
-    private static final List<Class<? extends Annotation>> BEAN_ANNOTATION = Arrays.asList(Component.class, Service.class, Repository.class, Controller.class);
+    private static final List<Class<? extends Annotation>> BEAN_ANNOTATION = Arrays.asList(Component.class, Service.class, Repository.class, Controller.class,Configuration.class);
     private static final List<Class<? extends Annotation>> WIRED_ANNOTATION = Arrays.asList(Autowired.class);
 
     /**

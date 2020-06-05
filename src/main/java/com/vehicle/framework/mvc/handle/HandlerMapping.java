@@ -99,8 +99,6 @@ public class HandlerMapping implements Handler {
             if (controllerInfo.getInvokeMethod().getParameters()[0].isAnnotationPresent(RequestParam.class)) {
                 HttpServletRequest request = requestChain.getHttpServletRequest();
                 List<Object> parameterList = new ArrayList<>(parameterMap.size());
-//                TODO 不对
-
                 Set<String> tempSet = parameterMap.keySet();
                 Parameter[] parameters = controllerInfo.getInvokeMethod().getParameters();
                 Iterator<String> iterator = tempSet.iterator();
