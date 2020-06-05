@@ -3,20 +3,9 @@ package com.vehicle.comon;
 /**
  * @author HALOXIAO
  **/
-public enum HTTP_METHOD {
-    GET("GET"),
-    POST("POST"),
-    PUT("PUT"),
-    DELETE("DELETE");
-
-
-    private String value;
-
-    HTTP_METHOD(String value) {
-        this.value = value;
-    }
-
-    public String getValue() {
-        return value;
-    }
+public class HTTP_METHOD {
+    public static final String HTTP_GET = "GET";
+    public static final String HTTP_PUT = "PUT";
+    public static final String HTTP_POST = "POST";
+    public static final String HTTP_DELETE = "DELETE";
 }
