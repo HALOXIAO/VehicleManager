@@ -1,8 +1,8 @@
 package com.vehicle.framework.mvc.render.exception;
 
 import com.alibaba.fastjson.JSON;
-import com.vehicle.comon.RESULT_BEAN_STATUS_CODE;
-import com.vehicle.comon.ResultBean;
+import com.vehicle.common.RESULT_BEAN_STATUS_CODE;
+import com.vehicle.common.ResultBean;
 import com.vehicle.framework.mvc.param.RequestChain;
 import lombok.extern.slf4j.Slf4j;
 

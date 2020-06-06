@@ -1,7 +1,7 @@
 package com.vehicle.business.controller;
 
-import com.vehicle.comon.HTTP_METHOD;
-import com.vehicle.comon.ResultBean;
+import com.vehicle.common.HTTP_METHOD;
+import com.vehicle.common.ResultBean;
 import com.vehicle.framework.core.annotation.Controller;
 import com.vehicle.framework.mvc.annotation.RequestMapping;
 import com.vehicle.framework.mvc.annotation.RequestParam;
@@ -19,5 +19,7 @@ public class AccountController {
 
         return null;
     }
+
+
 
 }
