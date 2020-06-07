@@ -19,7 +19,7 @@ public class OrmTest {
     }
 
     public static Session getSession() {
-        return factory.openSession();
+        return factory.getCurrentSession();
     }
 
 
@@ -33,7 +33,7 @@ public class OrmTest {
         Transaction transaction = session.getTransaction();
         transaction.begin();
         session.save(t);
-       transaction.commit();
+        transaction.commit();
         session.close();
 
     }

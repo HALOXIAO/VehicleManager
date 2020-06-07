@@ -25,7 +25,7 @@ public class BeanContainer {
     private final Map<Class<?>, Object> fieldApplication = new ConcurrentHashMap<>(INIT_SIZE);
     private boolean isLoad = false;
 
-    private static final List<Class<? extends Annotation>> BEAN_ANNOTATION = Arrays.asList(Component.class, Service.class, Repository.class, Controller.class,Configuration.class);
+    private static final List<Class<? extends Annotation>> BEAN_ANNOTATION = Arrays.asList(Component.class, Service.class, Repository.class, Controller.class, Configuration.class);
     private static final List<Class<? extends Annotation>> WIRED_ANNOTATION = Arrays.asList(Autowired.class);
 
     /**
@@ -118,8 +118,8 @@ public class BeanContainer {
      * @param packageUrl 扫描的包路径
      */
     @Deprecated
-    //  TODO Autowired
-    public void autowired(String packageUrl) {
+    //  TODO Autowired 需要注意的地方：1：循环依赖判断、2：依赖的嵌套初始化、3：优化代码结构
+    public void loadAutowired(String packageUrl) {
         if (!isLoad) {
             throw new ClassNotLoadException("class not load,can not autowired");
         }
@@ -151,8 +151,11 @@ public class BeanContainer {
                 }
             }
         });
+    }
 
 
+    private boolean resolveAnnotation() {
+        return false;
     }
 
 }

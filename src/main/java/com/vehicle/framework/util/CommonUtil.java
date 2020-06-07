@@ -5,6 +5,9 @@ package com.vehicle.framework.util;
  **/
 public class CommonUtil {
 
+    /**
+     * 字符串全小写
+    * */
     public static String toLowWords(String words){
             char[] charArray = words.toCharArray();
             charArray[0] += 32;

@@ -24,7 +24,7 @@ public class JsonRender implements Render {
             printWriter.write(JSON.toJSONString(requestChain.getResultBean()));
             printWriter.flush();
         } catch (IOException e) {
-            log.error("can not PrintWriter", e);
+            log.error("can not open PrintWriter", e);
         }
     }
 

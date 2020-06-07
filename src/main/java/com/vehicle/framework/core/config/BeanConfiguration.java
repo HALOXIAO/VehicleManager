@@ -21,6 +21,7 @@ public class BeanConfiguration {
         loadBean(application);
     }
 
+    //TODO 其实不用删了Configuration
     private void loadBean(BeanContainer application) throws InvocationTargetException, IllegalAccessException {
         Set<Class<?>> beanSet = application.getBeansByAnnotation(Configuration.class);
         Iterator<Class<?>> iterator = beanSet.iterator();

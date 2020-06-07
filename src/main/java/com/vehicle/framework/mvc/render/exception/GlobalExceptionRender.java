@@ -26,7 +26,7 @@ public class GlobalExceptionRender implements ExceptionRender {
             printWriter.write(JSON.toJSONString(bean));
             printWriter.flush();
         } catch (IOException ex) {
-            log.error("can not PrintWriter", ex);
+            log.error("can not open PrintWriter", ex);
         }
     }
 }
