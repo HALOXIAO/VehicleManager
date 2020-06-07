@@ -104,6 +104,8 @@
             <version>5.4.17.Final</version>
         </dependency>
 
+
+
     </dependencies>
 
     <build>
@@ -117,7 +119,51 @@
                     <target>10</target>
                 </configuration>
             </plugin>
+
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.1.0</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <transformers>
+                                <transformer
+                                        implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>com.vehicle.ApplicationBootstrap</mainClass>
+                                </transformer>
+                            </transformers>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+
         </plugins>
+
+        <resources>
+            <resource>
+                <directory>src/main/java</directory>
+                <!--包含了src/main/java目录下的所有xml资源配置文件-->
+                <includes>
+                    <include>**/*.xml</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <!--包含了src/main/resources目录下的所有xml资源配置文件-->
+                    <include>**/*.xml</include>
+                </includes>
+                <filtering>false</filtering>
+            </resource>
+        </resources>
+
     </build>
 
     <repositories>

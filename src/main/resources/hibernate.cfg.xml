@@ -1,0 +1,78 @@
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<!--
+
+
+<hibernate-configuration>
+    <session-factory>
+        <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
+        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/test?useUnicode=true&amp;characterEncoding=utf-8&amp;useSSL=false&amp;serverTimezone=UTC</property>
+        <property name="hibernate.connection.username">root</property>
+        <property name="hibernate.connection.password">haloxiao</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQL8Dialect</property>
+
+
+
+        &lt;!&ndash;显示hibernate在运行时候执行的sql语句 &ndash;&gt;
+        <property name="hibernate.show_sql">true</property>
+
+        &lt;!&ndash; 自动建表  &ndash;&gt;
+        <property name="hibernate.hbm2ddl.auto">update</property>
+
+        <mapping resource="com/vehicle/business/mapper/test.hbm.xml"/>
+    </session-factory>
+</hibernate-configuration>
+
+-->
+
+<hibernate-configuration>
+    <session-factory>
+
+        <property name="driverClassName">com.mysql.cj.jdbc.Driver</property>
+        <property name="url">jdbc:mysql://localhost:3306/test?useUnicode=true&amp;characterEncoding=utf-8&amp;useSSL=false&amp;serverTimezone=UTC</property>
+        <property name="username">root</property>
+        <property name="password">haloxiao</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQL8Dialect</property>
+
+
+        <!-- 可选配置================ -->
+        <!-- 打印SQL -->
+        <property name="hibernate.show_sql">true</property>
+        <!-- 格式化SQL -->
+        <property name="hibernate.format_sql">true</property>
+        <!-- 自动创建表 -->
+        <property name="hibernate.hbm2ddl.auto">update</property>
+
+        <!--    Druid-->
+
+        <!-- 配置druid连接池 -->
+        <property name="connection.provider_class">com.alibaba.druid.support.hibernate.DruidConnectionProvider
+        </property>
+        <!-- 配置初始化大小、最小、最大 -->
+        <property name="initialSize">1</property>
+        <property name="minIdle">1</property>
+        <property name="maxActive">20</property>
+
+        <!-- 配置获取连接等待超时的时间 -->
+        <property name="maxWait">60000</property>
+
+        <!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+        <property name="timeBetweenEvictionRunsMillis">60000</property>
+
+        <!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+        <property name="minEvictableIdleTimeMillis">300000</property>
+
+        <property name="validationQuery">SELECT 1</property>
+        <property name="testWhileIdle">true</property>
+        <property name="testOnBorrow">false</property>
+        <property name="testOnReturn">false</property>
+
+        <!-- 打开PSCache，并且指定每个连接上PSCache的大小 -->
+        <property name="poolPreparedStatements">true</property>
+        <property name="maxPoolPreparedStatementPerConnectionSize">20</property>
+
+
+        <mapping resource="com/vehicle/business/mapper/test.hbm.xml"/>
+    </session-factory>
+</hibernate-configuration>

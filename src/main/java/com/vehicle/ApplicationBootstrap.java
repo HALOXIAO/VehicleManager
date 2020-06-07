@@ -3,7 +3,6 @@ package com.vehicle;
 import com.vehicle.container.TomcatContainer;
 import com.vehicle.framework.core.BeanContainerFactory;
 import com.vehicle.framework.core.config.BeanConfiguration;
-import com.vehicle.framework.exception.ResourceNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.catalina.LifecycleException;
 
@@ -25,4 +24,6 @@ public class ApplicationBootstrap {
         new BeanConfiguration();
         new TomcatContainer().startUp();
     }
+
+
 }
