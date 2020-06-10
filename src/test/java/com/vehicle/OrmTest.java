@@ -1,6 +1,5 @@
 package com.vehicle;
 
-import com.vehicle.business.module.testM;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -25,7 +24,7 @@ public class OrmTest {
 
     @Test
     public void main() {
-        Session session = getSession();
+/*        Session session = getSession();
         testM t = new testM();
         t.setName("asdwqesac");
         t.setPassword("qweqwe");
@@ -34,7 +33,7 @@ public class OrmTest {
         transaction.begin();
         session.save(t);
         transaction.commit();
-        session.close();
+        session.close();*/
 
     }
 

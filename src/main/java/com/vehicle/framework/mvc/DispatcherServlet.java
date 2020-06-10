@@ -1,5 +1,6 @@
 package com.vehicle.framework.mvc;
 
+import com.vehicle.framework.exception.UrlNotFoundException;
 import com.vehicle.framework.mvc.handle.Handler;
 import com.vehicle.framework.mvc.handle.HandlerAdapter;
 import com.vehicle.framework.mvc.handle.HandlerMapping;
@@ -46,15 +47,12 @@ public class DispatcherServlet extends HttpServlet {
         RequestChain requestChain = assembleRChain(request, response);
         Iterator<Handler> iterator = HANDLER.iterator();
         Object obj = null;
-        for (; ; ) {
-            if (!iterator.hasNext()) {
-                break;
-            }
+        while (iterator.hasNext()) {
             Handler handler = iterator.next();
             try {
                 obj = handler.handle(requestChain);
                 if (obj == null) {
-                    throw new RuntimeException("DispatcherServlet exception");
+                    throw new UrlNotFoundException("URL not found exception:" + requestChain.toString());
                 }
             } catch (Exception e) {
                 log.error(e.getMessage());

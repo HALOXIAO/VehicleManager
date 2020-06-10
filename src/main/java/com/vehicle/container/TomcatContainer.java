@@ -9,7 +9,9 @@ import org.apache.catalina.LifecycleException;
 import org.apache.catalina.connector.Connector;
 import org.apache.catalina.core.StandardContext;
 import org.apache.catalina.startup.Tomcat;
+import org.apache.tomcat.util.scan.StandardJarScanner;
 
+import javax.servlet.ServletException;
 import java.io.File;
 import java.io.IOException;
 
@@ -23,7 +25,7 @@ public class TomcatContainer {
 
     private Tomcat tomcat;
 
-    public void startUp() throws IOException, LifecycleException {
+    public void startUp() throws IOException, LifecycleException, ServletException {
       log.info("start to init Tomcat");
         initTomcat();
         tomcat.start();
@@ -31,7 +33,7 @@ public class TomcatContainer {
         tomcat.getServer().await();
     }
 
-    private void initTomcat() throws IOException {
+    private void initTomcat() throws IOException, ServletException {
         TomcatProperties properties = new TomcatProperties();
         String userDir = System.getProperty("user.dir"); // 项目目录
         String tomcatBaseDir = userDir + File.separatorChar + "tomcat";
@@ -44,6 +46,7 @@ public class TomcatContainer {
         connector.setMaxCookieCount(properties.getMaxCookieCount());
         tomcat.getService().addConnector(connector);
         StandardContext ctx = (StandardContext) tomcat.addWebapp("/", webappDir);
+        ((StandardJarScanner) ctx.getJarScanner()).setScanManifest(false);
         tomcat.addServlet("", "dispatcherServlet", new DispatcherServlet()).setLoadOnStartup(0);
         ctx.addServletMappingDecoded("/*","dispatcherServlet");
     }

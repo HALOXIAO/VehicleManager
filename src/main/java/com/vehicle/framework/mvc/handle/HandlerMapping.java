@@ -1,6 +1,10 @@
 package com.vehicle.framework.mvc.handle;
 
 import com.alibaba.fastjson.JSON;
+import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.type.CollectionType;
+import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.vehicle.framework.core.BeanContainerFactory;
 import com.vehicle.framework.exception.AnnotationException;
 import com.vehicle.framework.exception.UserRequestException;
@@ -123,21 +127,33 @@ public class HandlerMapping implements Handler {
                         parameterList.add(temp);
                     }
                 }
-//                end
+
                 return controllerInfo.getInvokeMethod().invoke(obj, parameterList.toArray());
 
             } else {
+//                @ResultBody
                 BufferedReader reader = new BufferedReader(new InputStreamReader(requestChain.getHttpServletRequest().getInputStream(), StandardCharsets.UTF_8));
                 StringBuilder builder = new StringBuilder();
                 String line;
                 while ((line = reader.readLine()) != null) {
                     builder.append(line);
                 }
+//                TODO 这里有反序列化问题,need to test
                 Class<?> clz = controllerInfo.getMethodParameter().values().iterator().next();
+                if (clz.equals(List.class)) {
+                    ObjectMapper objectMapper = new ObjectMapper();
+                    TypeFactory typeFactory = TypeFactory.defaultInstance();
+                    JavaType javaType = typeFactory.constructType(parameterMap.get(clz).getGenericSuperclass());
+                    CollectionType collectionType = objectMapper.getTypeFactory().constructCollectionType(List.class, javaType);
+                    Object result = objectMapper.readValue(builder.toString(), collectionType);
+                    return controllerInfo.getInvokeMethod().invoke(obj, result);
+                }
                 return controllerInfo.getInvokeMethod().invoke(obj, JSON.parseObject(builder.toString(), clz));
             }
         }
-
+        /*
+         * ((ParameterizedTypeImpl) controllerInfo.getInvokeMethod().getGenericParameterTypes()[0]).getActualTypeArguments()[0]
+         * */
 
     }
 

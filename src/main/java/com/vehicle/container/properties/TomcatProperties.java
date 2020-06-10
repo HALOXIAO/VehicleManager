@@ -1,9 +1,11 @@
 package com.vehicle.container.properties;
 
+import com.vehicle.ApplicationBootstrap;
 import lombok.Getter;
 
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.URL;
 import java.util.Properties;
 
 /**
@@ -27,7 +29,9 @@ public class TomcatProperties {
 
     public TomcatProperties() throws IOException {
         Properties properties = new Properties();
-        properties.load(new FileInputStream(this.getClass().getResource("/application.properties").getPath()));
+        URL url  = this.getClass().getResource("/application.properties");
+        FileInputStream fileInputStream = new FileInputStream(url.getPath());
+        properties.load(fileInputStream);
         port = (String) properties.getOrDefault("tomcat.server.port", port);
         code = (String) properties.getOrDefault("tomcat.server.code", code);
         maxCookieCount = (Integer) properties.getOrDefault("tomcat.server.cookie-count", maxCookieCount);

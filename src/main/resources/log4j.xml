@@ -13,7 +13,7 @@
         <!--过滤器设置输出的级别-->
         <filter class="org.apache.log4j.varia.LevelRangeFilter">
             <!-- 设置日志输出的最小级别 -->
-            <param name="levelMin" value="WARN" />
+            <param name="levelMin" value="INFO" />
             <!-- 设置日志输出的最大级别 -->
             <param name="levelMax" value="ERROR" />
             <!-- 设置日志输出的xxx，默认是false -->

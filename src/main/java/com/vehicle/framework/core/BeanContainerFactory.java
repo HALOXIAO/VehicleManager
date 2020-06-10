@@ -1,15 +1,10 @@
 package com.vehicle.framework.core;
 
-import com.vehicle.ApplicationBootstrap;
-import com.vehicle.framework.exception.ResourceNotFoundException;
-
-import java.io.IOException;
-
 /**
  * @author HALOXIAO
  **/
 public class BeanContainerFactory {
-    private static volatile BeanContainer beanContainer;
+    private static volatile BeanContainer beanContainer=null;
 
     public static BeanContainer getBeanContainer() {
         if (beanContainer == null) {

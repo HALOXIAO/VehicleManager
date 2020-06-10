@@ -34,7 +34,6 @@ public class BeanConfiguration {
                     application.addBean(method.getReturnType(), result);
                 }
             }
-            application.deleteBean(clz);
         }
 
 

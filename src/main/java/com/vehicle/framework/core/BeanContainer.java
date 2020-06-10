@@ -20,13 +20,13 @@ import java.util.stream.Collectors;
 @Slf4j
 public class BeanContainer {
 
+    //    TODO log需要记录更多Infomation
+//    TODO 优化：依据Bean的名字注入
     private static final int INIT_SIZE = 256;
     private final static Map<Class<?>, Object> application = new ConcurrentHashMap<>(INIT_SIZE);
-    private final Map<Class<?>, Object> fieldApplication = new ConcurrentHashMap<>(INIT_SIZE);
     private boolean isLoad = false;
 
     private static final List<Class<? extends Annotation>> BEAN_ANNOTATION = Arrays.asList(Component.class, Service.class, Repository.class, Controller.class, Configuration.class);
-    private static final List<Class<? extends Annotation>> WIRED_ANNOTATION = Arrays.asList(Autowired.class);
 
     /**
      * 获取所有的bean
@@ -57,6 +57,16 @@ public class BeanContainer {
         return application.put(cla, obj);
     }
 
+    public boolean canRegister(Class<?> clz) {
+        for (Class<? extends Annotation> annotation : BEAN_ANNOTATION) {
+            if (clz.isAnnotationPresent(annotation)) {
+                return true;
+            }
+        }
+        return false;
+
+    }
+
     /**
      * 通过Class获取bean
      *
@@ -78,6 +88,15 @@ public class BeanContainer {
         ).collect(Collectors.toSet());
     }
 
+
+
+    /**
+     * 是否加载
+     */
+    public boolean isLoad() {
+        return isLoad;
+    }
+
     /**
      * 返回bean的数量
      *
@@ -97,6 +116,7 @@ public class BeanContainer {
             log.warn("Already load bean");
             return;
         }
+        log.info("start to load bean");
         Set<Class<?>> classes = ClassUtil.getPackageClass(packageUrl);
         classes.stream().filter(clz -> {
             for (Class<? extends Annotation> annotation : BEAN_ANNOTATION) {
@@ -108,18 +128,20 @@ public class BeanContainer {
         }).forEach(clz -> {
             addBean(clz, ClassUtil.newInstance(clz));
         });
+        log.info("Bean" + application.toString());
         isLoad = true;
     }
 
-    /**
-     * (还没搞完，别调用)
-     * 自动注入功能
-     *
-     * @param packageUrl 扫描的包路径
-     */
+/**
+ * (还没搞完，别调用)
+ * 自动注入功能
+ *
+ * @param packageUrl 扫描的包路径
+ */
+/*
     @Deprecated
     //  TODO Autowired 需要注意的地方：1：循环依赖判断、2：依赖的嵌套初始化、3：优化代码结构
-    public void loadAutowired(String packageUrl) {
+    public void loadAutowired1(String packageUrl) {
         if (!isLoad) {
             throw new ClassNotLoadException("class not load,can not autowired");
         }
@@ -151,12 +173,8 @@ public class BeanContainer {
                 }
             }
         });
-    }
+    }*/
 
-
-    private boolean resolveAnnotation() {
-        return false;
-    }
 
 }
 
