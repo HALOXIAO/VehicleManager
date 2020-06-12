@@ -75,5 +75,6 @@
 
 <!--        <mapping resource="com/vehicle/business/mapper/test.hbm.xml"/>-->
         <mapping resource="com/vehicle/business/mapper/DriverMapper.hbm.xml"/>
+        <mapping resource="com/vehicle/business/mapper/StationMapper.hbm.xml"/>
     </session-factory>
 </hibernate-configuration>
