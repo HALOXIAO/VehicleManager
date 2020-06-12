@@ -55,7 +55,7 @@ public class DispatcherServlet extends HttpServlet {
                     throw new UrlNotFoundException("URL not found exception:" + requestChain.toString());
                 }
             } catch (Exception e) {
-                log.error(e.getMessage());
+                log.error(e.getLocalizedMessage());
                 if (EXCEPTION_RENDER.iterator().hasNext()) {
                     ExceptionRender render = EXCEPTION_RENDER.iterator().next();
                     render.handler(requestChain, e);

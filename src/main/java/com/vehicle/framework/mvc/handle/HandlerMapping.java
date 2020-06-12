@@ -20,9 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
+import java.lang.reflect.*;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
@@ -143,7 +141,8 @@ public class HandlerMapping implements Handler {
                 if (clz.equals(List.class)) {
                     ObjectMapper objectMapper = new ObjectMapper();
                     TypeFactory typeFactory = TypeFactory.defaultInstance();
-                    JavaType javaType = typeFactory.constructType(parameterMap.get(clz).getGenericSuperclass());
+                    Type name = ((ParameterizedType) controllerInfo.getInvokeMethod().getParameters()[0].getParameterizedType()).getActualTypeArguments()[0];
+                    JavaType javaType = typeFactory.constructType(name);
                     CollectionType collectionType = objectMapper.getTypeFactory().constructCollectionType(List.class, javaType);
                     Object result = objectMapper.readValue(builder.toString(), collectionType);
                     return controllerInfo.getInvokeMethod().invoke(obj, result);
