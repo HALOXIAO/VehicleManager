@@ -20,8 +20,8 @@ public class StationService {
 
     public StationTotalVO getStationPage(PageParam pageParam) {
         List<StationVO> stationVOList = stationMapper.getStationPage(pageParam);
-
-        return null;
+        Long count = stationMapper.countStation();
+        return new StationTotalVO(stationVOList, count);
     }
 
 }
