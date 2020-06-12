@@ -6,7 +6,10 @@
 <hibernate-mapping package="com.vehicle.business.module">
 
     <class name="Driver" table="bus_conf_driver">
-        <id name="id" column="id"></id>
+        <id name="id" column="id" type="java.lang.Integer">
+            <generator class="native"/>
+        </id>
+
 
         <property name="name" column="name"></property>
         <property name="salary" column="salary"></property>

@@ -1,8 +1,13 @@
 package com.vehicle.common;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * @author HALOXIAO
  **/
+@Getter
+@Setter
 public class ResultBean<T> {
 
 

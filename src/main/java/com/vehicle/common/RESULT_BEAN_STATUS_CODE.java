@@ -1,8 +1,11 @@
 package com.vehicle.common;
 
+import lombok.Getter;
+
 /**
  * @author HALOXIAO
  **/
+
 public enum RESULT_BEAN_STATUS_CODE {
 
     //未登录
@@ -25,7 +28,7 @@ public enum RESULT_BEAN_STATUS_CODE {
         this.code = code;
     }
 
-    public int getValue(){
+    public int getValue() {
         return code;
     }
 }
