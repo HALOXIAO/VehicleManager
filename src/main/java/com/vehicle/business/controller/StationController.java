@@ -32,8 +32,7 @@ public class StationController {
         pageParam.setPage(page);
         pageParam.setSize(size);
         StationTotalVO stationTotalVO = new StationTotalVO();
-        stationTotalVO.setStationVO(stationService.getStations(pageParam));
-        stationTotalVO.setTotal(stationService.stationPageCount());
+
         ResultBean<StationTotalVO> bean = new ResultBean<>("success", RESULT_BEAN_STATUS_CODE.SUCCESS);
         bean.setData(stationTotalVO);
         return bean;
@@ -41,29 +40,20 @@ public class StationController {
 
     @RequestMapping(value = "/station",method = HTTP_METHOD.HTTP_POST)
     public ResultBean<Boolean> addStations(@RequestBody  List<StationNameParam> names) {
-        if (null == stationService.addStations(names).get(0).getId()) {
-            return new ResultBean<>("fail", RESULT_BEAN_STATUS_CODE.UNKNOWN_EXCEPTION);
-        }
+
         return new ResultBean<>("success", RESULT_BEAN_STATUS_CODE.SUCCESS);
 
     }
 
     @RequestMapping(value = "/station",method = HTTP_METHOD.HTTP_PUT)
     public ResultBean<Boolean> updateStations(@RequestBody  List<StationUpdatedParam> stationUpdatedParams) {
-        if (!stationService.updateStations(stationUpdatedParams)) {
-            return new ResultBean<>("fail", RESULT_BEAN_STATUS_CODE.UNKNOWN_EXCEPTION);
-        }
+
         return new ResultBean<>("success", RESULT_BEAN_STATUS_CODE.SUCCESS);
     }
 
     @RequestMapping(value = "/station",method = HTTP_METHOD.HTTP_DELETE)
     public ResultBean<Boolean> deleteStations(@RequestBody  List<Integer> ids) {
-        if (!ArgumentCheck.checkIds(ids)) {
-            return new ResultBean<>("argument", RESULT_BEAN_STATUS_CODE.ARGUMENT_EXCEPTION);
-        }
-        if (!stationService.deleteStations(ids)) {
-            return new ResultBean<>("fail", RESULT_BEAN_STATUS_CODE.UNKNOWN_EXCEPTION);
-        }
+
         return new ResultBean<>("success", RESULT_BEAN_STATUS_CODE.SUCCESS);
     }
 
