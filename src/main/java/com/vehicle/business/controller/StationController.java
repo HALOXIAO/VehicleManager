@@ -38,21 +38,21 @@ public class StationController {
         return bean;
     }
 
-    @RequestMapping(value = "/station",method = HTTP_METHOD.HTTP_POST)
-    public ResultBean<Boolean> addStations(@RequestBody  List<StationNameParam> names) {
+    @RequestMapping(value = "/station", method = HTTP_METHOD.HTTP_POST)
+    public ResultBean<Boolean> addStations(@RequestBody List<StationNameParam> names) {
 
         return new ResultBean<>("success", RESULT_BEAN_STATUS_CODE.SUCCESS);
 
     }
 
-    @RequestMapping(value = "/station",method = HTTP_METHOD.HTTP_PUT)
-    public ResultBean<Boolean> updateStations(@RequestBody  List<StationUpdatedParam> stationUpdatedParams) {
+    @RequestMapping(value = "/station", method = HTTP_METHOD.HTTP_PUT)
+    public ResultBean<Boolean> updateStations(@RequestBody List<StationUpdatedParam> stationUpdatedParams) {
 
         return new ResultBean<>("success", RESULT_BEAN_STATUS_CODE.SUCCESS);
     }
 
-    @RequestMapping(value = "/station",method = HTTP_METHOD.HTTP_DELETE)
-    public ResultBean<Boolean> deleteStations(@RequestBody  List<Integer> ids) {
+    @RequestMapping(value = "/station", method = HTTP_METHOD.HTTP_DELETE)
+    public ResultBean<Boolean> deleteStations(@RequestBody List<Integer> ids) {
 
         return new ResultBean<>("success", RESULT_BEAN_STATUS_CODE.SUCCESS);
     }
