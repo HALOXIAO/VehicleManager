@@ -1,24 +1,14 @@
 package com.vehicle.business.mapper;
 
-import com.alibaba.fastjson.JSON;
 import com.vehicle.business.config.HibernateUtilConfig;
 import com.vehicle.business.module.Driver;
-import com.vehicle.business.module.convert.DriverToDriverVo;
 import com.vehicle.business.module.param.PageParam;
-import com.vehicle.business.module.vo.DriverTotalVO;
-import com.vehicle.business.module.vo.DriverVO;
 import com.vehicle.framework.core.annotation.Repository;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.NativeQuery;
-import org.hibernate.query.Query;
-import org.hibernate.query.criteria.internal.CriteriaQueryImpl;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * @author HALOXIAO
@@ -68,7 +58,7 @@ public class DriverMapper {
         NativeQuery driverQuery = session.createSQLQuery("SELECT COUNT(*)FROM bus_conf_driver");
         transaction.commit();
         session.close();
-        return  driverQuery.getResultList()==null ?null:(Long) driverQuery.getResultList().get(0);
+        return driverQuery.list() == null ? null : driverQuery.list().size() == 1 ? (Long) driverQuery.list().get(0) : null;
     }
 
 

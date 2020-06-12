@@ -17,7 +17,7 @@ import java.util.List;
 public interface DriverToDriverVo {
     DriverToDriverVo INSTANCE = Mappers.getMapper(DriverToDriverVo.class);
 
-    List<DriverVO> toDriverList(List<Driver> drivers);
+    List<DriverVO> toDriverVOList(List<Driver> drivers);
 
 
     @Mappings({
@@ -25,7 +25,7 @@ public interface DriverToDriverVo {
             @Mapping(source = "salary",target = "salary"),
             @Mapping(source = "id",target = "id")
     })
-    DriverVO toDriver(Driver driver);
+    DriverVO toDriverVO(Driver driver);
 
 
 
