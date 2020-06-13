@@ -35,8 +35,7 @@ public class RouteService {
             String[] stationIds = route.getDetail().split(",");
             idSet.addAll(Arrays.asList(stationIds));
         });
-
-//        stationMapper.getStationPage();
+        stationMapper.getStationPage(idSet);
         return null;
     }
 
