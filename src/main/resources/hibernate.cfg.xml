@@ -73,8 +73,9 @@
         <property name="maxPoolPreparedStatementPerConnectionSize">20</property>
 
 
-<!--        <mapping resource="com/vehicle/business/mapper/test.hbm.xml"/>-->
+        <!--        <mapping resource="com/vehicle/business/mapper/test.hbm.xml"/>-->
         <mapping resource="com/vehicle/business/mapper/DriverMapper.hbm.xml"/>
         <mapping resource="com/vehicle/business/mapper/StationMapper.hbm.xml"/>
+        <mapping resource="com/vehicle/business/mapper/RouteMapper.hbm.xml"/>
     </session-factory>
 </hibernate-configuration>

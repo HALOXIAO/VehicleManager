@@ -11,8 +11,8 @@
         </id>
 
 
-        <property name="name" column="name"></property>
-        <property name="salary" column="salary"></property>
+        <property name="name" column="name" type="java.lang.String"/>
+        <property name="salary" column="salary" type="java.math.BigDecimal"/>
     </class>
 
 </hibernate-mapping>
