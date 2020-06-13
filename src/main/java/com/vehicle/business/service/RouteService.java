@@ -96,5 +96,9 @@ public class RouteService {
         return 0;
     }
 
+    private boolean checkStationExist(RouteParam routeParam) {
+        return stationMapper.checkStationsExist();
+    }
+
 
 }

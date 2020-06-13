@@ -52,11 +52,21 @@ public class StationMapper {
     public Long countStation() {
         Session session = HibernateUtilConfig.getSession();
         Transaction transaction = session.getTransaction();
+        transaction.begin();
         NativeQuery nativeQuery = session.createSQLQuery("SELECT COUNT(*)FROM bus_conf_station WHERE status=?");
         nativeQuery.setParameter(1, DATABASE_COMMON_STATUS_CODE.NORMAL.getValue());
         transaction.commit();
         session.close();
         return nativeQuery.list() == null ? null : nativeQuery.list().size() == 1 ? (Long) nativeQuery.list().get(0) : null;
+    }
+
+    public boolean checkStationsExist(){
+        Session session = HibernateUtilConfig.getSession();
+        Transaction transaction = session.getTransaction();
+        transaction.begin();
+
+        return false;
+
     }
 
 
