@@ -42,6 +42,7 @@ public class DriverMapper {
     public List<Driver> getDriverPage(PageParam pageParam) {
         Session session = HibernateUtilConfig.getSession();
         Transaction transaction = session.getTransaction();
+        transaction.begin();
         NativeQuery driverQuery = session.createSQLQuery("SELECT id,name,salary FROM bus_conf_driver LIMIT #{page},#{size}");
         driverQuery.addEntity(Driver.class);
         List<Driver> drivers = driverQuery.list();
@@ -53,8 +54,9 @@ public class DriverMapper {
 
     public Long countDriver() {
         Session session = HibernateUtilConfig.getSession();
-        Transaction transaction = session.getTransaction();
         session.setDefaultReadOnly(true);
+        Transaction transaction = session.getTransaction();
+        transaction.begin();
         NativeQuery driverQuery = session.createSQLQuery("SELECT COUNT(*)FROM bus_conf_driver");
         transaction.commit();
         session.close();

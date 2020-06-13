@@ -1,6 +1,8 @@
 package com.vehicle.business.service;
 
 import com.vehicle.business.mapper.StationMapper;
+import com.vehicle.business.module.Station;
+import com.vehicle.business.module.convert.StationToStationVO;
 import com.vehicle.business.module.param.PageParam;
 import com.vehicle.business.module.vo.StationTotalVO;
 import com.vehicle.business.module.vo.StationVO;
@@ -19,9 +21,9 @@ public class StationService {
     StationMapper stationMapper;
 
     public StationTotalVO getStationPage(PageParam pageParam) {
-        List<StationVO> stationVOList = stationMapper.getStationPage(pageParam);
+        List<Station> stationVOList = stationMapper.getStationPage(pageParam);
         Long count = stationMapper.countStation();
-        return new StationTotalVO(stationVOList, count);
+        return new StationTotalVO(StationToStationVO.INSTANCE.toStationVOList(stationVOList), count);
     }
 
 }

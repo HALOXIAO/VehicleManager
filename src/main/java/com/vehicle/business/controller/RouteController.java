@@ -45,9 +45,9 @@ public class RouteController {
 
     @RequestMapping(value = "/route",method = HTTP_METHOD.HTTP_DELETE)
     public ResultBean<Boolean> deleteRoute(@RequestBody List<Integer> ids) {
-        if (!ArgumentCheck.checkIds(ids)) {
-            return new ResultBean<>("argument", RESULT_BEAN_STATUS_CODE.ARGUMENT_EXCEPTION);
-        }
+//        if (!ArgumentCheck.checkIds(ids)) {
+//            return new ResultBean<>("argument", RESULT_BEAN_STATUS_CODE.ARGUMENT_EXCEPTION);
+//        }
         if (!routeService.deleteRoutes(ids)) {
             return new ResultBean<>("fail", RESULT_BEAN_STATUS_CODE.UNKNOWN_EXCEPTION);
         }
@@ -60,19 +60,21 @@ public class RouteController {
         pageParam.setPage(page);
         pageParam.setSize(size);
         RouteTotalVO routeTotalVO = new RouteTotalVO();
-        routeTotalVO.setRouteVO(routeService.getRoutes(pageParam));
+        routeTotalVO.setRouteVO(routeService.getRoutePage(pageParam));
         routeTotalVO.setTotal(routeService.routePageCount());
         ResultBean<RouteTotalVO> bean = new ResultBean<>("success", RESULT_BEAN_STATUS_CODE.SUCCESS);
         bean.setData(routeTotalVO);
         return bean;
     }
 
-    @GetMapping("/route/detail")
+    @RequestMapping("/route/detail")
     public ResultBean<RouteVO> getRoute(@RequestParam("id")  Integer id) {
         RouteVO routeVO = routeService.getRoute(id);
         ResultBean<RouteVO> bean = new ResultBean<>("success", RESULT_BEAN_STATUS_CODE.SUCCESS);
         bean.setData(routeVO);
         return bean;
     }
+
+
 
 }

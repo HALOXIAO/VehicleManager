@@ -12,7 +12,9 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.NativeQuery;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author HALOXIAO
@@ -21,7 +23,7 @@ import java.util.List;
 public class StationMapper {
 
 
-    public List<StationVO> getStationPage(PageParam pageParam) {
+    public List<Station> getStationPage(PageParam pageParam) {
         Session session = HibernateUtilConfig.getSession();
         Transaction transaction = session.getTransaction();
         NativeQuery nativeQuery = session.createSQLQuery("SELECT id, name, address FROM bus_conf_station WHERE status=? LIMIT #{page},#{size} ");
@@ -30,7 +32,20 @@ public class StationMapper {
         transaction.commit();
         session.close();
         List<Station> stations = nativeQuery.list();
-        return StationToStationVO.INSTANCE.toStationVOList(stations);
+        return stations;
+    }
+
+    public List<Station> getStationPage(String[] ids) {
+        Session session = HibernateUtilConfig.getSession();
+        Transaction transaction = session.getTransaction();
+        NativeQuery nativeQuery = session.createSQLQuery("SELECT id, name, address FROM bus_conf_station WHERE status=? AND id IN (?) ");
+        nativeQuery.setParameter(1, DATABASE_COMMON_STATUS_CODE.NORMAL.getValue());
+        nativeQuery.setParameter(2, ids);
+        nativeQuery.addEntity(Station.class);
+        transaction.commit();
+        session.close();
+        List<Station> stations = nativeQuery.list();
+        return stations;
     }
 
     public Long countStation() {
