@@ -60,12 +60,17 @@ public class StationMapper {
         return nativeQuery.list() == null ? null : nativeQuery.list().size() == 1 ? (Long) nativeQuery.list().get(0) : null;
     }
 
-    public boolean checkStationsExist(){
+
+    public boolean checkRouteStationsExist(List<Integer> ids) {
         Session session = HibernateUtilConfig.getSession();
         Transaction transaction = session.getTransaction();
         transaction.begin();
-
-        return false;
+        NativeQuery nativeQuery = session.createSQLQuery("SELECT id FROM bus_conf_station WHERE  id IN(?) LIMIT ?");
+        nativeQuery.setParameter(1,ids.toString().replace("[","").replace("]",""));
+        nativeQuery.setParameter(2, ids.size());
+        transaction.commit();
+        session.close();
+        return nativeQuery.list().size()==ids.size();
 
     }
 

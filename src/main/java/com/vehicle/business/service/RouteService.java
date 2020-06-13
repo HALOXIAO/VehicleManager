@@ -12,6 +12,7 @@ import com.vehicle.business.module.param.RouteParam;
 import com.vehicle.business.module.param.RouteUpdatedParam;
 import com.vehicle.business.module.vo.RouteVO;
 import com.vehicle.business.module.vo.StationVO;
+import com.vehicle.common.status.DATABASE_COMMON_STATUS_CODE;
 import com.vehicle.framework.core.annotation.Autowired;
 import com.vehicle.framework.core.annotation.Service;
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -72,7 +73,14 @@ public class RouteService {
     }
 
     public Route addRoute(RouteParam routeParam) {
-        return null;
+        Route route = new Route();
+        route.setName(routeParam.getName());
+        route.setDetail(detailTransform(routeParam.getStationIds()));
+        route.setStartId(routeParam.getStationIds().get(0));
+        route.setEndId(routeParam.getStationIds().get(routeParam.getStationIds().size() - 1));
+        route.setStartId(DATABASE_COMMON_STATUS_CODE.NORMAL.getValue());
+        routeMapper.addRoute(route);
+        return route;
     }
 
     public RouteVO getRoute(Integer id) {
@@ -89,15 +97,20 @@ public class RouteService {
     }
 
     private String detailTransform(List<Integer> routeDetail) {
-        return null;
+        StringBuilder builder = new StringBuilder(routeDetail.size() * 2 - 1);
+        routeDetail.forEach(station -> {
+            builder.append(station).append(",");
+        });
+        builder.deleteCharAt(builder.lastIndexOf(","));
+        return builder.toString();
     }
 
     public int routePageCount() {
         return 0;
     }
 
-    private boolean checkStationExist(RouteParam routeParam) {
-        return stationMapper.checkStationsExist();
+    private boolean checkStationExist(List<Integer> ids) {
+        return stationMapper.checkRouteStationsExist(ids);
     }
 
 
