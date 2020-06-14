@@ -85,6 +85,12 @@ public class RouteService {
     }
 
     public RouteVO getRoute(Integer id) {
+        Route route = routeMapper.getRoute(id);
+        RouteVO result = new RouteVO();
+        result.setId(result.getId());
+        result.setName(route.getName());
+        String[] stations = route.getDetail().split(",");
+
         return null;
     }
 

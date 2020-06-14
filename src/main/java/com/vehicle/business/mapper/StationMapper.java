@@ -31,15 +31,15 @@ public class StationMapper {
         nativeQuery.setMaxResults(pageParam.getSize());
         nativeQuery.setFirstResult(pageParam.getPage());
         transaction.commit();
-        List<Station> stations = new ArrayList<>(nativeQuery.list().size());
         Object[] obj = nativeQuery.list().toArray();
+        List<Station> stations = new ArrayList<>(nativeQuery.list().size());
         session.close();
         for (Object object : obj) {
-            Object[] temp = (Object[])object;
+            Object[] temp = (Object[]) object;
             Station station = new Station();
             station.setId((Integer) temp[0]);
             station.setName((String) temp[1]);
-            station.setAddress((String)temp[2]);
+            station.setAddress((String) temp[2]);
             stations.add(station);
         }
         return stations;

@@ -9,6 +9,7 @@ import com.vehicle.framework.core.annotation.Repository;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.NativeQuery;
+import org.hibernate.query.Query;
 
 import java.util.List;
 
@@ -38,7 +39,7 @@ public class RouteMapper {
         session.close();
     }
 
-    public void updateRoute(Route route){
+    public void updateRoute(Route route) {
         Session session = HibernateUtilConfig.getSession();
         Transaction transaction = session.getTransaction();
         transaction.begin();
@@ -47,7 +48,7 @@ public class RouteMapper {
         session.close();
     }
 
-    public void deleteRoutes(List<Integer>ids){
+    public void deleteRoutes(List<Integer> ids) {
         Session session = HibernateUtilConfig.getSession();
         Transaction transaction = session.getTransaction();
         transaction.begin();
@@ -57,5 +58,18 @@ public class RouteMapper {
         transaction.commit();
         session.close();
     }
+
+    public Route getRoute(Integer id) {
+        Session session = HibernateUtilConfig.getSession();
+        Transaction transaction = session.getTransaction();
+        transaction.begin();
+        Query query = session.createQuery("SELECT id,detail,name  FROM Route  WHERE status=?1");
+        query.setParameter(1, DATABASE_COMMON_STATUS_CODE.NORMAL.getValue());
+        transaction.commit();
+        List temp = query.list();
+        session.close();
+        return null;
+    }
+
 
 }
