@@ -1,5 +1,7 @@
 package com.vehicle.business.controller;
 
+import com.vehicle.business.config.HibernateUtilConfig;
+import com.vehicle.business.module.Driver;
 import com.vehicle.business.module.param.PageParam;
 import com.vehicle.business.module.param.StationNameParam;
 import com.vehicle.business.module.param.StationUpdatedParam;
@@ -13,7 +15,10 @@ import com.vehicle.framework.core.annotation.Controller;
 import com.vehicle.framework.mvc.annotation.RequestBody;
 import com.vehicle.framework.mvc.annotation.RequestMapping;
 import com.vehicle.framework.mvc.annotation.RequestParam;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 
+import javax.persistence.OptimisticLockException;
 import java.util.List;
 
 /**
@@ -23,7 +28,7 @@ import java.util.List;
 public class StationController {
 
     @Autowired
-    StationService stationService;
+    public StationService stationService;
 
 
     @RequestMapping("/station")
@@ -31,8 +36,7 @@ public class StationController {
         PageParam pageParam = new PageParam();
         pageParam.setPage(page);
         pageParam.setSize(size);
-        StationTotalVO stationTotalVO = new StationTotalVO();
-
+        StationTotalVO stationTotalVO = stationService.getStationPage(pageParam);
         ResultBean<StationTotalVO> bean = new ResultBean<>("success", RESULT_BEAN_STATUS_CODE.SUCCESS);
         bean.setData(stationTotalVO);
         return bean;
@@ -56,5 +60,21 @@ public class StationController {
 
         return new ResultBean<>("success", RESULT_BEAN_STATUS_CODE.SUCCESS);
     }
+
+    @RequestMapping(value = "/test")
+    public String test() {
+        Session session = HibernateUtilConfig.getSession();
+        Transaction transaction = session.getTransaction();
+        transaction.begin();
+        Driver driver = new Driver();
+        driver.setId(500);
+        session.delete(driver);
+        transaction.commit();
+        session.close();
+//        OptimisticLockException
+        return "Hello World";
+    }
+
+
 
 }

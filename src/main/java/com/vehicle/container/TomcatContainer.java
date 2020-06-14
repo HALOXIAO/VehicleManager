@@ -26,7 +26,7 @@ public class TomcatContainer {
     private Tomcat tomcat;
 
     public void startUp() throws IOException, LifecycleException, ServletException {
-      log.info("start to init Tomcat");
+        log.info("start to init Tomcat");
         initTomcat();
         tomcat.start();
         log.info("tomcat online");
@@ -48,7 +48,7 @@ public class TomcatContainer {
         StandardContext ctx = (StandardContext) tomcat.addWebapp("/", webappDir);
         ((StandardJarScanner) ctx.getJarScanner()).setScanManifest(false);
         tomcat.addServlet("", "dispatcherServlet", new DispatcherServlet()).setLoadOnStartup(0);
-        ctx.addServletMappingDecoded("/*","dispatcherServlet");
+        ctx.addServletMappingDecoded("/*", "dispatcherServlet");
     }
 
 }

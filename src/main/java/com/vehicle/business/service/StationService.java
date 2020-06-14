@@ -18,12 +18,13 @@ import java.util.List;
 public class StationService {
 
     @Autowired
-    StationMapper stationMapper;
+    public StationMapper stationMapper;
 
     public StationTotalVO getStationPage(PageParam pageParam) {
-        List<Station> stationVOList = stationMapper.getStationPage(pageParam);
+        pageParam.setPage(pageParam.getPage() - 1);
+        List<Station> stationList = stationMapper.getStationPage(pageParam);
         Long count = stationMapper.countStation();
-        return new StationTotalVO(StationToStationVO.INSTANCE.toStationVOList(stationVOList), count);
+        return new StationTotalVO(StationToStationVO.INSTANCE.toStationVOList(stationList), count);
     }
 
 }

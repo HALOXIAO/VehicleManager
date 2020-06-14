@@ -7,6 +7,8 @@ import org.apache.catalina.LifecycleException;
 import javax.servlet.ServletException;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.HashMap;
+import java.util.Vector;
 
 /**
  * @author HALOXIAO

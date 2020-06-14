@@ -7,6 +7,7 @@ import com.vehicle.business.mapper.RouteMapper;
 import com.vehicle.business.mapper.StationMapper;
 import com.vehicle.business.module.Route;
 import com.vehicle.business.module.Station;
+import com.vehicle.business.module.convert.RouteUpParamToRoute;
 import com.vehicle.business.module.param.PageParam;
 import com.vehicle.business.module.param.RouteParam;
 import com.vehicle.business.module.param.RouteUpdatedParam;
@@ -26,10 +27,10 @@ import java.util.*;
 public class RouteService {
 
     @Autowired
-    RouteMapper routeMapper;
+    public RouteMapper routeMapper;
 
     @Autowired
-    StationMapper stationMapper;
+    public StationMapper stationMapper;
 
     public List<RouteVO> getRoutePage(PageParam pageParam) {
         List<Route> routeList = routeMapper.getRoutePage(pageParam);
@@ -88,10 +89,12 @@ public class RouteService {
     }
 
     public boolean updateRoute(RouteUpdatedParam routeParam) {
-        return false;
+        routeMapper.updateRoute(RouteUpParamToRoute.toRoute(routeParam));
+        return true;
     }
 
     public boolean deleteRoutes(List<Integer> ids) {
+        routeMapper.deleteRoutes(ids);
         return false;
 
     }

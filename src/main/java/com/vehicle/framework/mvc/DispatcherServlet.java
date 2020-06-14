@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -55,7 +56,7 @@ public class DispatcherServlet extends HttpServlet {
                     throw new UrlNotFoundException("URL not found exception:" + requestChain.toString());
                 }
             } catch (Exception e) {
-                log.error(e.getLocalizedMessage());
+                log.error(Arrays.toString(e.getStackTrace()));
                 if (EXCEPTION_RENDER.iterator().hasNext()) {
                     ExceptionRender render = EXCEPTION_RENDER.iterator().next();
                     render.handler(requestChain, e);

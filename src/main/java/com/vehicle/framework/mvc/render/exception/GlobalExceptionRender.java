@@ -1,6 +1,7 @@
 package com.vehicle.framework.mvc.render.exception;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.vehicle.common.RESULT_BEAN_STATUS_CODE;
 import com.vehicle.common.ResultBean;
 import com.vehicle.framework.mvc.param.RequestChain;
@@ -23,7 +24,7 @@ public class GlobalExceptionRender implements ExceptionRender {
         response.setCharacterEncoding("UTF-8");
         ResultBean<Boolean> bean = new ResultBean<>("fail", RESULT_BEAN_STATUS_CODE.UNKNOWN_EXCEPTION);
         try (PrintWriter printWriter = response.getWriter()) {
-            printWriter.write(JSON.toJSONString(bean));
+            printWriter.write(JSON.toJSONString(bean, SerializerFeature.WriteMapNullValue));
             printWriter.flush();
         } catch (IOException ex) {
             log.error("can not open PrintWriter", ex);

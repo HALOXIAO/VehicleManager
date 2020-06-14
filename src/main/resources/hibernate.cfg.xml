@@ -33,7 +33,7 @@
         <property name="url">jdbc:mysql://121.196.207.132:3306/vehicle?useUnicode=true&amp;characterEncoding=utf-8&amp;useSSL=false&amp;serverTimezone=UTC</property>
         <property name="username">root</property>
         <property name="password">Haloxiao@5847</property>
-        <property name="hibernate.dialect">org.hibernate.dialect.MySQL8Dialect</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQL57Dialect</property>
 
 
         <!-- 可选配置================ -->

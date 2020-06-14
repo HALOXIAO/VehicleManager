@@ -26,10 +26,10 @@ public class RouteMapper {
         routeQuery.setParameter(1, DATABASE_COMMON_STATUS_CODE.NORMAL);
         transaction.commit();
         session.close();
-        return routeQuery.list();
+        return routeQuery.getResultList();
     }
 
-    public  void addRoute(Route route){
+    public void addRoute(Route route) {
         Session session = HibernateUtilConfig.getSession();
         Transaction transaction = session.getTransaction();
         transaction.begin();
@@ -38,5 +38,24 @@ public class RouteMapper {
         session.close();
     }
 
+    public void updateRoute(Route route){
+        Session session = HibernateUtilConfig.getSession();
+        Transaction transaction = session.getTransaction();
+        transaction.begin();
+        session.update(route);
+        transaction.commit();
+        session.close();
+    }
+
+    public void deleteRoutes(List<Integer>ids){
+        Session session = HibernateUtilConfig.getSession();
+        Transaction transaction = session.getTransaction();
+        transaction.begin();
+        ids.forEach(
+                session::delete
+        );
+        transaction.commit();
+        session.close();
+    }
 
 }

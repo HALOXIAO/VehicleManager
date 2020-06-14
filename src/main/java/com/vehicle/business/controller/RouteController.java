@@ -24,7 +24,7 @@ import java.util.List;
 public class RouteController {
 
     @Autowired
-    RouteService routeService;
+   public RouteService routeService;
 
     @RequestMapping(value = "/route",method = HTTP_METHOD.HTTP_POST)
     public ResultBean<Boolean> addRoute(@RequestBody RouteParam routeParam) {
