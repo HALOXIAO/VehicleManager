@@ -28,7 +28,7 @@ import java.util.Date;
 public class TripController {
 
     @Autowired
-    TripService tripService;
+    public TripService tripService;
 
     @RequestMapping(value = "/trip",method = HTTP_METHOD.HTTP_POST)
     public ResultBean<Boolean> addTrip(@RequestBody TripParam tripParam) {

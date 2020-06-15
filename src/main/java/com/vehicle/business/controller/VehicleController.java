@@ -28,7 +28,7 @@ public class VehicleController {
 
 
     @Autowired
-    VehicleService vehicleService;
+    public VehicleService vehicleService;
 
     //TODO 注意为null
     @RequestMapping(value = "/manage/vehicle", method = HTTP_METHOD.HTTP_DELETE)

@@ -52,9 +52,11 @@ public class TripService {
         session.setDefaultReadOnly(true);
         Transaction transaction = session.getTransaction();
         transaction.begin();
-//        Query query = session.createQuery("select id FROM ")
-//        Route route = session.get(Route.class, id);
+        Query query = session.createQuery("select id FROM Vehicle WHERE vehicleNumber=?1");
+        query.setParameter(1, vehicleNumber);
         transaction.commit();
+//        transaction.f();
+
         return false;
     }
 
@@ -78,7 +80,6 @@ public class TripService {
         trip.setVehicleNumber(tripParam.getVehicleNumber());
         trip.setSeats(tripParam.getSeats());
         trip.setRouteId(tripParam.getRouteId());
-
         return false;
 
     }
