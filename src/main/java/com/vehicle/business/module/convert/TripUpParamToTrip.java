@@ -21,9 +21,11 @@ public interface TripUpParamToTrip {
 
     @Mappings({
             @Mapping(source = "id", target = "id"),
-            @Mapping(source = "name", target = "name"),
-            @Mapping(source = "address", target = "address"),
-            @Mapping(target = "status", ignore = true)
+            @Mapping(source = "vehicleNumber",target = "vehicleNumber"),
+            @Mapping(source = "seats",target = "seats"),
+            @Mapping(source = "routeId",target = "routeId"),
+            @Mapping(target = "status", ignore = true),
+            @Mapping(target = "date",ignore = true)
     }
     )
     Trip toTrip(TripUpdatedParam tripUpdatedParam);

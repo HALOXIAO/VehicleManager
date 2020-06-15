@@ -1,5 +1,6 @@
 package com.vehicle.business.mapper;
 
+import com.sun.istack.NotNull;
 import com.vehicle.business.config.HibernateUtilConfig;
 import com.vehicle.business.module.Trip;
 import com.vehicle.business.module.param.TripPageParam;
@@ -26,19 +27,16 @@ public class TripMapper {
         return null;
     }
 
-    public void addTrip(Trip trip, Session session) {
-        boolean tag = false;
-        if (session == null) {
-            tag = true;
-            session = HibernateUtilConfig.getSession();
-        }
+    public void addTrip(Trip trip, @NotNull Session session) {
+        session.save(trip);
+    }
+
+    public void updateTrip(Trip trip, @NotNull Session session) {
+
         Transaction transaction = session.getTransaction();
         transaction.begin();
-        session.save(trip);
-        transaction.commit();
-        if (tag) {
-            session.close();
-        }
+        session.update(trip);
+
     }
 
 }

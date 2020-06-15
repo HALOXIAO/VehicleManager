@@ -1,9 +1,10 @@
 package com.vehicle;
 
-import com.vehicle.business.module.param.PageParam;
-import com.vehicle.business.service.StationService;
-import com.vehicle.framework.core.annotation.Autowired;
+import com.vehicle.business.config.HibernateUtilConfig;
+import com.vehicle.business.module.Route;
 import com.vehicle.framework.core.annotation.Component;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.junit.Test;
 
 /**
@@ -12,13 +13,11 @@ import org.junit.Test;
 @Component
 public class SqlTest {
 
-    @Autowired
-    StationService stationService;
-
 
     @Test
     public void contextLoader() {
-        PageParam pageParam = new PageParam(1,10);
-        stationService.getStationPage(pageParam);
+        Session session = HibernateUtilConfig.getSession();
+        Session session2 = HibernateUtilConfig.getSession();
+        System.out.println(session.equals(session2));
     }
 }
