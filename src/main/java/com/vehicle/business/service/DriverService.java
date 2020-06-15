@@ -30,6 +30,7 @@ public class DriverService {
     }
 
     public DriverTotalVO getDriversPage(PageParam pageParam) {
+        pageParam.setPage(pageParam.getPage());
         List<Driver> drivers = driverMapper.getDriverPage(pageParam);
         List<DriverVO> driverVOList = DriverToDriverVo.INSTANCE.toDriverVOList(drivers);
         Long count = driverMapper.countDriver();

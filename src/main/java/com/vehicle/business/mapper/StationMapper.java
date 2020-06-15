@@ -1,11 +1,13 @@
 package com.vehicle.business.mapper;
 
 import com.alibaba.fastjson.JSON;
+import com.vehicle.business.common.exception.ParamException;
 import com.vehicle.business.config.HibernateUtilConfig;
 import com.vehicle.business.module.Station;
 import com.vehicle.business.module.param.PageParam;
 import com.vehicle.common.status.DATABASE_COMMON_STATUS_CODE;
 import com.vehicle.framework.core.annotation.Repository;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.NativeQuery;
@@ -18,6 +20,7 @@ import java.util.*;
  * @author HALOXIAO
  **/
 @Repository
+@Slf4j
 public class StationMapper {
 
 
@@ -70,6 +73,7 @@ public class StationMapper {
         transaction.commit();
         BigInteger count = nativeQuery.list() == null ? null : nativeQuery.list().size() == 1 ? (BigInteger) nativeQuery.list().get(0) : null;
         session.close();
+        Objects.requireNonNull(count);
         return count.longValue();
     }
 
@@ -85,6 +89,34 @@ public class StationMapper {
         session.close();
         return nativeQuery.list().size() == ids.size();
 
+    }
+
+    public void addStations(List<Station> station) {
+        Session session = HibernateUtilConfig.getSession();
+        Transaction transaction = session.getTransaction();
+        transaction.begin();
+        station.forEach(p -> {
+            if (p.getId() != null) {
+                throw new ParamException("station has id");
+            }
+            session.save(p);
+        });
+        transaction.commit();
+        session.close();
+    }
+
+    public void updateStation(List<Station> stationList) {
+        Session session = HibernateUtilConfig.getSession();
+        Transaction transaction = session.getTransaction();
+        transaction.begin();
+        stationList.forEach(session::update);
+        try {
+            transaction.commit();
+        } catch (Exception e) {
+            transaction.rollback();
+            throw new RuntimeException(Arrays.toString(e.getStackTrace()));
+        }
+        session.close();
     }
 
 

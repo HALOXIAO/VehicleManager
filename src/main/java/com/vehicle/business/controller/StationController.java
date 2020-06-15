@@ -1,7 +1,5 @@
 package com.vehicle.business.controller;
 
-import com.vehicle.business.config.HibernateUtilConfig;
-import com.vehicle.business.module.Driver;
 import com.vehicle.business.module.param.PageParam;
 import com.vehicle.business.module.param.StationNameParam;
 import com.vehicle.business.module.param.StationUpdatedParam;
@@ -15,10 +13,7 @@ import com.vehicle.framework.core.annotation.Controller;
 import com.vehicle.framework.mvc.annotation.RequestBody;
 import com.vehicle.framework.mvc.annotation.RequestMapping;
 import com.vehicle.framework.mvc.annotation.RequestParam;
-import org.hibernate.Session;
-import org.hibernate.Transaction;
 
-import javax.persistence.OptimisticLockException;
 import java.util.List;
 
 /**
@@ -44,35 +39,20 @@ public class StationController {
 
     @RequestMapping(value = "/station", method = HTTP_METHOD.HTTP_POST)
     public ResultBean<Boolean> addStations(@RequestBody List<StationNameParam> names) {
-
+        stationService.addStations(names);
         return new ResultBean<>("success", RESULT_BEAN_STATUS_CODE.SUCCESS);
-
     }
 
     @RequestMapping(value = "/station", method = HTTP_METHOD.HTTP_PUT)
     public ResultBean<Boolean> updateStations(@RequestBody List<StationUpdatedParam> stationUpdatedParams) {
-
+        stationService.updateStations(stationUpdatedParams);
         return new ResultBean<>("success", RESULT_BEAN_STATUS_CODE.SUCCESS);
     }
 
     @RequestMapping(value = "/station", method = HTTP_METHOD.HTTP_DELETE)
     public ResultBean<Boolean> deleteStations(@RequestBody List<Integer> ids) {
-
+        stationService.deleteStations(ids);
         return new ResultBean<>("success", RESULT_BEAN_STATUS_CODE.SUCCESS);
-    }
-
-    @RequestMapping(value = "/test")
-    public String test() {
-        Session session = HibernateUtilConfig.getSession();
-        Transaction transaction = session.getTransaction();
-        transaction.begin();
-        Driver driver = new Driver();
-        driver.setId(500);
-        session.delete(driver);
-        transaction.commit();
-        session.close();
-//        OptimisticLockException
-        return "Hello World";
     }
 
 

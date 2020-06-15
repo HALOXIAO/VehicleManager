@@ -10,6 +10,7 @@ import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
 
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -72,8 +73,9 @@ public class DriverMapper {
         NativeQuery driverQuery = session.createSQLQuery("SELECT COUNT(*)FROM bus_conf_driver");
         transaction.commit();
         session.close();
-        return driverQuery.list() == null ? null : driverQuery.list().size() == 1 ? (Long) driverQuery.list().get(0) : null;
-    }
+        BigInteger count = driverQuery.list() == null ? null : driverQuery.list().size() == 1 ? (BigInteger) driverQuery.list().get(0) : null;
+        return count.longValue();
+        }
 
 
     public void deleteDriverBatch(List<Integer> ids) {

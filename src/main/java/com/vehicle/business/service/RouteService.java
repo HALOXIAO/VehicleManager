@@ -8,6 +8,7 @@ import com.vehicle.business.mapper.StationMapper;
 import com.vehicle.business.module.Route;
 import com.vehicle.business.module.Station;
 import com.vehicle.business.module.convert.RouteUpParamToRoute;
+import com.vehicle.business.module.convert.StationToStationVO;
 import com.vehicle.business.module.param.PageParam;
 import com.vehicle.business.module.param.RouteParam;
 import com.vehicle.business.module.param.RouteUpdatedParam;
@@ -90,8 +91,12 @@ public class RouteService {
         result.setId(result.getId());
         result.setName(route.getName());
         String[] stations = route.getDetail().split(",");
-
-        return null;
+        HashSet<String> ids = new HashSet<>((int) (stations.length / 0.75f) + 1);
+        ids.addAll(Arrays.asList(stations));
+        List<Station> stationList = stationMapper.getStationPage(ids);
+        List<StationVO> stationVOList = StationToStationVO.INSTANCE.toStationVOList(stationList);
+        result.setRouteDetail(stationVOList);
+        return result;
     }
 
     public boolean updateRoute(RouteUpdatedParam routeParam) {
@@ -101,7 +106,7 @@ public class RouteService {
 
     public boolean deleteRoutes(List<Integer> ids) {
         routeMapper.deleteRoutes(ids);
-        return false;
+        return true;
 
     }
 
@@ -114,8 +119,8 @@ public class RouteService {
         return builder.toString();
     }
 
-    public int routePageCount() {
-        return 0;
+    public Long routePageCount() {
+        return routeMapper.routeCount();
     }
 
     private boolean checkStationExist(List<Integer> ids) {

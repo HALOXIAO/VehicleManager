@@ -11,7 +11,9 @@ import org.hibernate.Transaction;
 import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
 
+import java.math.BigInteger;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author HALOXIAO
@@ -22,12 +24,26 @@ public class RouteMapper {
         Session session = HibernateUtilConfig.getSession();
         Transaction transaction = session.getTransaction();
         transaction.begin();
-        NativeQuery routeQuery = session.createSQLQuery("SELECT id,  detail, name  from bus_conf_route WHERE status=? LIMIT #{page},#{size}");
-        routeQuery.addEntity(Route.class);
+        Query routeQuery = session.createQuery("SELECT id,  detail, name  from Route WHERE status=?1 ");
         routeQuery.setParameter(1, DATABASE_COMMON_STATUS_CODE.NORMAL);
+        routeQuery.setMaxResults(pageParam.getSize());
+        routeQuery.setFirstResult(pageParam.getPage());
         transaction.commit();
         session.close();
         return routeQuery.getResultList();
+    }
+
+    public Long routeCount() {
+        Session session = HibernateUtilConfig.getSession();
+        Transaction transaction = session.getTransaction();
+        transaction.begin();
+        NativeQuery nativeQuery = session.createSQLQuery("SELECT COUNT(*)FROM bus_conf_route WHERE status=?");
+        nativeQuery.setParameter(1, DATABASE_COMMON_STATUS_CODE.NORMAL.getValue());
+        transaction.commit();
+        BigInteger count = nativeQuery.list() == null ? null : nativeQuery.list().size() == 1 ? (BigInteger) nativeQuery.list().get(0) : null;
+        session.close();
+        Objects.requireNonNull(count);
+        return count.longValue();
     }
 
     public void addRoute(Route route) {
@@ -68,7 +84,10 @@ public class RouteMapper {
         transaction.commit();
         List temp = query.list();
         session.close();
-        return null;
+        if (temp == null || temp.size() == 1) {
+            return null;
+        }
+        return (Route) temp.get(0);
     }
 
 
