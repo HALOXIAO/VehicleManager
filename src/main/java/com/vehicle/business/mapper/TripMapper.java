@@ -26,11 +26,19 @@ public class TripMapper {
         return null;
     }
 
-    public void addTrip(Trip trip){
-        Session session = HibernateUtilConfig.getSession();
+    public void addTrip(Trip trip, Session session) {
+        boolean tag = false;
+        if (session == null) {
+            tag = true;
+            session = HibernateUtilConfig.getSession();
+        }
         Transaction transaction = session.getTransaction();
         transaction.begin();
-
+        session.save(trip);
+        transaction.commit();
+        if (tag) {
+            session.close();
+        }
     }
 
 }

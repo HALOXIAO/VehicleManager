@@ -75,22 +75,13 @@ public class TripService {
             throw new IllegalArgumentException("date should be bigger than now ");
         }
         Trip trip = TripParamToTrip.toTrip(tripParam, TIME_FORMATTER);
-//        tripMapper.
-        return false;
+        tripMapper.addTrip(trip, session);
+        session.close();
+        return true;
 
     }
 
     public boolean updateTrip(TripUpdatedParam tripUpdatedParam) {
-        if (tripUpdatedParam.getRouteId() != null) {
-//            if (!checkRoute(tripUpdatedParam.getRouteId())) {
-//                throw new DataBaseRelationshipException("route does not exist");
-//            }
-        }
-        if (tripUpdatedParam.getVehicleNumber() != null) {
-//            if (!checkVehicle(tripUpdatedParam.getVehicleNumber())) {
-//                throw new DataBaseRelationshipException("vehicle does not exist");
-//            }
-        }
         LocalDateTime date;
         try {
             date = LocalDateTime.parse(tripUpdatedParam.getDate(), TIME_FORMATTER);
@@ -100,6 +91,18 @@ public class TripService {
         if (date.isBefore(LocalDateTime.now())) {
             throw new IllegalArgumentException("date should be bigger than now ");
         }
+        Session session = HibernateUtilConfig.getSession();
+        if (tripUpdatedParam.getRouteId() != null) {
+            if (!checkRoute(tripUpdatedParam.getRouteId(), session)) {
+                throw new DataBaseRelationshipException("route does not exist");
+            }
+        }
+        if (tripUpdatedParam.getVehicleNumber() != null) {
+            if (!checkVehicle(tripUpdatedParam.getVehicleNumber(),session)) {
+                throw new DataBaseRelationshipException("vehicle does not exist");
+            }
+        }
+
         Trip trip = new Trip();
         trip.setDate(date);
         trip.setRouteId(tripUpdatedParam.getRouteId());
@@ -118,9 +121,9 @@ public class TripService {
         List<Trip> tripVOList = tripMapper.getTripPage(tripPageParam);
 
         int total = getTripPageCount(tripPageParam);
-/*        TripTotalVO tripTotalVO = new TripTotalVO();
+        TripTotalVO tripTotalVO = new TripTotalVO();
         tripTotalVO.setTotal(total);
-        tripTotalVO.setTripVO(tripVOList);*/
+//        tripTotalVO.setTripVO(tripVOList);
         return null;
     }
 
