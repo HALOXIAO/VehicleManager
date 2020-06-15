@@ -1,17 +1,18 @@
 package com.vehicle.business.service;
 
 
+import com.sun.istack.NotNull;
 import com.vehicle.business.common.exception.DataBaseRelationshipException;
 import com.vehicle.business.config.HibernateUtilConfig;
 import com.vehicle.business.mapper.RouteMapper;
 import com.vehicle.business.mapper.TripMapper;
 import com.vehicle.business.module.Route;
 import com.vehicle.business.module.Trip;
+import com.vehicle.business.module.convert.TripParamToTrip;
 import com.vehicle.business.module.param.TripPageParam;
 import com.vehicle.business.module.param.TripParam;
 import com.vehicle.business.module.param.TripUpdatedParam;
 import com.vehicle.business.module.vo.TripTotalVO;
-import com.vehicle.business.module.vo.TripVO;
 import com.vehicle.framework.core.annotation.Autowired;
 import com.vehicle.framework.core.annotation.Service;
 import org.hibernate.Session;
@@ -39,7 +40,7 @@ public class TripService {
     private final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
 
-    private boolean checkRoute(Integer id, Session session) {
+    private boolean checkRoute(@NotNull Integer id, Session session) {
         session.setDefaultReadOnly(true);
         Transaction transaction = session.getTransaction();
         transaction.begin();
@@ -48,16 +49,14 @@ public class TripService {
         return route != null;
     }
 
-    private boolean checkVehicle(String vehicleNumber, Session session) {
+    private boolean checkVehicle(@NotNull String vehicleNumber, Session session) {
         session.setDefaultReadOnly(true);
         Transaction transaction = session.getTransaction();
         transaction.begin();
         Query query = session.createQuery("select id FROM Vehicle WHERE vehicleNumber=?1");
         query.setParameter(1, vehicleNumber);
         transaction.commit();
-//        transaction.f();
-
-        return false;
+        return query.list() != null;
     }
 
 
@@ -70,16 +69,13 @@ public class TripService {
         try {
             date = LocalDateTime.parse(tripParam.getDate(), TIME_FORMATTER);
         } catch (DateTimeParseException e) {
-            throw new IllegalArgumentException("日期错误");
+            throw new IllegalArgumentException("date format wrong");
         }
         if (date.isBefore(LocalDateTime.now())) {
-            throw new IllegalArgumentException("日期不应该比现在小");
+            throw new IllegalArgumentException("date should be bigger than now ");
         }
-        Trip trip = new Trip();
-        trip.setDate(date);
-        trip.setVehicleNumber(tripParam.getVehicleNumber());
-        trip.setSeats(tripParam.getSeats());
-        trip.setRouteId(tripParam.getRouteId());
+        Trip trip = TripParamToTrip.toTrip(tripParam, TIME_FORMATTER);
+//        tripMapper.
         return false;
 
     }
@@ -99,10 +95,10 @@ public class TripService {
         try {
             date = LocalDateTime.parse(tripUpdatedParam.getDate(), TIME_FORMATTER);
         } catch (DateTimeParseException e) {
-            throw new IllegalArgumentException("日期错误");
+            throw new IllegalArgumentException("date format wrong");
         }
         if (date.isBefore(LocalDateTime.now())) {
-            throw new IllegalArgumentException("日期不应该小于当前日期");
+            throw new IllegalArgumentException("date should be bigger than now ");
         }
         Trip trip = new Trip();
         trip.setDate(date);

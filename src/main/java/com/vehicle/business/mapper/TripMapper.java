@@ -26,4 +26,11 @@ public class TripMapper {
         return null;
     }
 
+    public void addTrip(Trip trip){
+        Session session = HibernateUtilConfig.getSession();
+        Transaction transaction = session.getTransaction();
+        transaction.begin();
+
+    }
+
 }

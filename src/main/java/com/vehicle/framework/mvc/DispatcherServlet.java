@@ -9,6 +9,7 @@ import com.vehicle.framework.mvc.render.JsonRender;
 import com.vehicle.framework.mvc.render.Render;
 import com.vehicle.framework.mvc.render.exception.ExceptionRender;
 import com.vehicle.framework.mvc.render.exception.GlobalExceptionRender;
+import com.vehicle.framework.mvc.render.exception.IllegalArgumentExceptionRender;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.ServletException;
@@ -39,6 +40,7 @@ public class DispatcherServlet extends HttpServlet {
         HandlerAdapter adapter = new HandlerAdapter();
         HANDLER.add(adapter);
         HANDLER.add(new HandlerMapping(adapter.getControllerClasses()));
+        EXCEPTION_RENDER.add(new IllegalArgumentExceptionRender());
         EXCEPTION_RENDER.add(new GlobalExceptionRender());
     }
 
