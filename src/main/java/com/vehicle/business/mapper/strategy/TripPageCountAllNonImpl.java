@@ -23,3 +23,5 @@ public class TripPageCountAllNonImpl implements TripPageCountStrategy {
         return count.longValue();
     }
 }
+
+
