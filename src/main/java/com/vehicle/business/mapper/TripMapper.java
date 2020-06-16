@@ -39,4 +39,19 @@ public class TripMapper {
 
     }
 
+    public Long tripPageCount(@NotNull TripPageParam tripPageParam, @NotNull Session session) {
+        assert tripPageParam != null;
+        if (tripPageParam.getDate() != null && tripPageParam.getRoute() != null) {
+
+        } else if (tripPageParam.getDate() == null && tripPageParam.getRoute() == null) {
+
+        } else if (tripPageParam.getRoute() != null) {
+
+        } else   {
+
+        }
+        return null;
+    }
+
+
 }

@@ -8,9 +8,10 @@ import org.hibernate.Session;
  **/
 public class SessionUtils {
 
-    public static void subsequentProcessing(@NotNull Session session){
-        session.getTransaction().commit();
-        session.close();
+    public static void subsequentProcessing(@NotNull Session session) {
+        try (session) {
+            session.getTransaction().commit();
+        }
     }
 
 }

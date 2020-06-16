@@ -3,10 +3,14 @@ package com.vehicle.business.service;
 import com.google.common.base.Function;
 import com.google.common.collect.ImmutableMap;
 import com.vehicle.business.common.util.CollectionUtils;
+import com.vehicle.business.common.util.SessionUtils;
+import com.vehicle.business.config.HibernateUtilConfig;
 import com.vehicle.business.mapper.RouteMapper;
 import com.vehicle.business.mapper.StationMapper;
 import com.vehicle.business.module.Route;
 import com.vehicle.business.module.Station;
+import com.vehicle.business.module.convert.RouteParamToRoute;
+import com.vehicle.business.module.convert.RouteToRouteVO;
 import com.vehicle.business.module.convert.RouteUpParamToRoute;
 import com.vehicle.business.module.convert.StationToStationVO;
 import com.vehicle.business.module.param.PageParam;
@@ -18,6 +22,8 @@ import com.vehicle.common.status.DATABASE_COMMON_STATUS_CODE;
 import com.vehicle.framework.core.annotation.Autowired;
 import com.vehicle.framework.core.annotation.Service;
 import org.checkerframework.checker.nullness.qual.Nullable;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 import java.util.*;
 
@@ -34,13 +40,17 @@ public class RouteService {
     public StationMapper stationMapper;
 
     public List<RouteVO> getRoutePage(PageParam pageParam) {
-        List<Route> routeList = routeMapper.getRoutePage(pageParam);
+        Session session = HibernateUtilConfig.getSession();
+        session.beginTransaction();
+        session.setDefaultReadOnly(true);
+        List<Route> routeList = routeMapper.getRoutePage(pageParam, session);
         Set<String> idSet = new HashSet<>();
         routeList.forEach(route -> {
             String[] stationIds = route.getDetail().split(",");
             idSet.addAll(Arrays.asList(stationIds));
         });
-        List<Station> stations = stationMapper.getStationPage(idSet);
+        List<Station> stations = stationMapper.getStationPage(idSet, session);
+        SessionUtils.subsequentProcessing(session);
         ImmutableMap<Integer, StationVO> idStationVOMap = CollectionUtils.toMap(stations.iterator(), new Function<Station, Integer>() {
             @Nullable
             @Override
@@ -60,42 +70,33 @@ public class RouteService {
         });
         List<RouteVO> resultList = new LinkedList<>();
         routeList.forEach(route -> {
-            RouteVO routeVO = new RouteVO();
-            routeVO.setId(route.getId());
-            routeVO.setName(route.getName());
-            String[] stationTemp = route.getDetail().split(",");
-            List<StationVO> list = new ArrayList<>(stationTemp.length);
-            for (int i = 0; i < stationTemp.length; i++) {
-                list.add(idStationVOMap.get(Integer.valueOf(stationTemp[i])));
-            }
-            routeVO.setRouteDetail(list);
-            resultList.add(routeVO);
+            resultList.add(RouteToRouteVO.toRouteVO(route, idStationVOMap));
         });
+
         return resultList;
     }
 
     public Route addRoute(RouteParam routeParam) {
-        Route route = new Route();
-        route.setName(routeParam.getName());
-        route.setDetail(detailTransform(routeParam.getStationIds()));
-        route.setStartId(routeParam.getStationIds().get(0));
-        route.setEndId(routeParam.getStationIds().get(routeParam.getStationIds().size() - 1));
-        route.setStartId(DATABASE_COMMON_STATUS_CODE.NORMAL.getValue());
+        Route route = RouteParamToRoute.toRoute(routeParam);
         routeMapper.addRoute(route);
         return route;
     }
 
     public RouteVO getRoute(Integer id) {
-        Route route = routeMapper.getRoute(id);
+        Session session = HibernateUtilConfig.getSession();
+        Transaction transaction = session.beginTransaction();
+        session.setDefaultReadOnly(true);
+        Route route = routeMapper.getRoute(id, session);
         RouteVO result = new RouteVO();
         result.setId(result.getId());
         result.setName(route.getName());
         String[] stations = route.getDetail().split(",");
         HashSet<String> ids = new HashSet<>((int) (stations.length / 0.75f) + 1);
         ids.addAll(Arrays.asList(stations));
-        List<Station> stationList = stationMapper.getStationPage(ids);
+        List<Station> stationList = stationMapper.getStationPage(ids, session);
         List<StationVO> stationVOList = StationToStationVO.INSTANCE.toStationVOList(stationList);
         result.setRouteDetail(stationVOList);
+        SessionUtils.subsequentProcessing(session);
         return result;
     }
 
@@ -110,14 +111,6 @@ public class RouteService {
 
     }
 
-    private String detailTransform(List<Integer> routeDetail) {
-        StringBuilder builder = new StringBuilder(routeDetail.size() * 2 - 1);
-        routeDetail.forEach(station -> {
-            builder.append(station).append(",");
-        });
-        builder.deleteCharAt(builder.lastIndexOf(","));
-        return builder.toString();
-    }
 
     public Long routePageCount() {
         return routeMapper.routeCount();

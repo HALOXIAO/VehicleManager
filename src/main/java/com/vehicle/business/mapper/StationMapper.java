@@ -48,16 +48,12 @@ public class StationMapper {
         return stations;
     }
 
-    public List<Station> getStationPage(Set<String> idSet) {
+    public List<Station> getStationPage(Set<String> idSet,Session session) {
         String temp = Arrays.toString(idSet.toArray()).replace("[", "").replace("]", "");
-        Session session = HibernateUtilConfig.getSession();
-        Transaction transaction = session.getTransaction();
         NativeQuery nativeQuery = session.createSQLQuery("SELECT  id, name, address FROM bus_conf_station WHERE status=? AND id IN (?) ");
         nativeQuery.setParameter(1, DATABASE_COMMON_STATUS_CODE.NORMAL.getValue());
         nativeQuery.setParameter(2, temp);
         nativeQuery.addEntity(Station.class);
-        transaction.commit();
-        session.close();
         List<Station> stations = new ArrayList<>();
         Object[] obj = nativeQuery.list().toArray();
 

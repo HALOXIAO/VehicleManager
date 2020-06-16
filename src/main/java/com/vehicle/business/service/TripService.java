@@ -109,13 +109,8 @@ public class TripService {
         trip.setDate(LocalDateTime.parse(tripUpdatedParam.getDate(), TIME_FORMATTER));
         trip.setStatus(DATABASE_COMMON_STATUS_CODE.NORMAL.getValue());
         tripMapper.updateTrip(trip, session);
-        try {
-            SessionUtils.subsequentProcessing(session);
-        } finally {
-            if (session.isOpen()) {
-                session.close();
-            }
-        }
+        SessionUtils.subsequentProcessing(session);
+
         return true;
     }
 
@@ -126,16 +121,18 @@ public class TripService {
     public TripTotalVO getTripPage(TripPageParam tripPageParam) {
         tripPageParam.setPage(((tripPageParam.getPage() - 1) * tripPageParam.getSize()));
         Session session = HibernateUtilConfig.getSession();
+        session.setDefaultReadOnly(true);
+        session.beginTransaction();
         List<Trip> tripVOList = tripMapper.getTripPage(tripPageParam);
-        int total = getTripPageCount(tripPageParam);
+        long total = getTripPageCount(tripPageParam,session);
         TripTotalVO tripTotalVO = new TripTotalVO();
         tripTotalVO.setTotal(total);
 //        tripTotalVO.setTripVO(tripVOList);
         return null;
     }
 
-    private Integer getTripPageCount(TripPageParam tripPageParam) {
-        return 0;
+    private Long getTripPageCount(TripPageParam tripPageParam, Session session) {
+        return tripMapper.tripPageCount(tripPageParam, session);
 
 
     }

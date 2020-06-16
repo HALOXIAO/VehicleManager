@@ -1,13 +1,13 @@
 package com.vehicle.business.mapper;
 
+import com.sun.istack.NotNull;
+import com.vehicle.business.common.util.SessionUtils;
 import com.vehicle.business.config.HibernateUtilConfig;
 import com.vehicle.business.module.Route;
 import com.vehicle.business.module.param.PageParam;
-import com.vehicle.business.module.param.RouteParam;
 import com.vehicle.common.status.DATABASE_COMMON_STATUS_CODE;
 import com.vehicle.framework.core.annotation.Repository;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
 import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
 
@@ -20,73 +20,52 @@ import java.util.Objects;
  **/
 @Repository
 public class RouteMapper {
-    public List<Route> getRoutePage(PageParam pageParam) {
-        Session session = HibernateUtilConfig.getSession();
-        Transaction transaction = session.getTransaction();
-        transaction.begin();
+    public List<Route> getRoutePage(PageParam pageParam, @NotNull Session session) {
         Query routeQuery = session.createQuery("SELECT id,  detail, name  from Route WHERE status=?1 ");
         routeQuery.setParameter(1, DATABASE_COMMON_STATUS_CODE.NORMAL);
         routeQuery.setMaxResults(pageParam.getSize());
         routeQuery.setFirstResult(pageParam.getPage());
-        transaction.commit();
-        session.close();
         return routeQuery.getResultList();
     }
 
     public Long routeCount() {
         Session session = HibernateUtilConfig.getSession();
-        Transaction transaction = session.getTransaction();
-        transaction.begin();
+        session.beginTransaction();
         NativeQuery nativeQuery = session.createSQLQuery("SELECT COUNT(*)FROM bus_conf_route WHERE status=?");
         nativeQuery.setParameter(1, DATABASE_COMMON_STATUS_CODE.NORMAL.getValue());
-        transaction.commit();
         BigInteger count = nativeQuery.list() == null ? null : nativeQuery.list().size() == 1 ? (BigInteger) nativeQuery.list().get(0) : null;
-        session.close();
+        SessionUtils.subsequentProcessing(session);
         Objects.requireNonNull(count);
         return count.longValue();
     }
 
     public void addRoute(Route route) {
         Session session = HibernateUtilConfig.getSession();
-        Transaction transaction = session.getTransaction();
-        transaction.begin();
+        session.beginTransaction();
         session.save(route);
-        transaction.commit();
-        session.close();
+        SessionUtils.subsequentProcessing(session);
     }
 
     public void updateRoute(Route route) {
         Session session = HibernateUtilConfig.getSession();
-        Transaction transaction = session.getTransaction();
-        transaction.begin();
+        session.beginTransaction();
         session.update(route);
-        transaction.commit();
-        session.close();
+        SessionUtils.subsequentProcessing(session);
     }
 
     public void deleteRoutes(List<Integer> ids) {
         Session session = HibernateUtilConfig.getSession();
-        Transaction transaction = session.getTransaction();
-        transaction.begin();
+        session.beginTransaction();
         ids.forEach(
                 session::delete
         );
-        transaction.commit();
-        session.close();
+        SessionUtils.subsequentProcessing(session);
     }
 
-    public Route getRoute(Integer id) {
-        Session session = HibernateUtilConfig.getSession();
-        Transaction transaction = session.getTransaction();
-        transaction.begin();
+    public Route getRoute(Integer id, Session session) {
         Query query = session.createQuery("SELECT id,detail,name  FROM Route  WHERE status=?1");
         query.setParameter(1, DATABASE_COMMON_STATUS_CODE.NORMAL.getValue());
-        transaction.commit();
         List temp = query.list();
-        session.close();
-        if (temp == null || temp.size() == 1) {
-            return null;
-        }
         return (Route) temp.get(0);
     }
 
