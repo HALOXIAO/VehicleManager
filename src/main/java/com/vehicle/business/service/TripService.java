@@ -19,6 +19,7 @@ import com.vehicle.common.HTTP_METHOD;
 import com.vehicle.common.status.DATABASE_COMMON_STATUS_CODE;
 import com.vehicle.framework.core.annotation.Autowired;
 import com.vehicle.framework.core.annotation.Service;
+import lombok.extern.slf4j.Slf4j;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
@@ -26,11 +27,13 @@ import org.hibernate.query.Query;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.Arrays;
 import java.util.List;
 
 /**
  * @author HALOXIAO
  **/
+@Slf4j
 @Service
 public class TripService {
 
@@ -115,7 +118,20 @@ public class TripService {
     }
 
     public boolean deleteTrip(List<Integer> ids) {
-        return false;
+        Session session = HibernateUtilConfig.getSession();
+        session.beginTransaction();
+        ids.forEach(id -> {
+            Trip trip = new Trip();
+            trip.setId(id);
+            trip.setStatus(DATABASE_COMMON_STATUS_CODE.NORMAL.getValue());
+            tripMapper.updateTrip(trip, session);
+        });
+        try {
+            SessionUtils.subsequentProcessing(session);
+        } catch (Exception e) {
+            log.error(Arrays.toString(e.getStackTrace()));
+        }
+        return true;
     }
 
     public TripTotalVO getTripPage(TripPageParam tripPageParam) {
@@ -124,11 +140,11 @@ public class TripService {
         session.setDefaultReadOnly(true);
         session.beginTransaction();
         List<Trip> tripVOList = tripMapper.getTripPage(tripPageParam);
-        long total = getTripPageCount(tripPageParam,session);
+
+        long total = getTripPageCount(tripPageParam, session);
         TripTotalVO tripTotalVO = new TripTotalVO();
         tripTotalVO.setTotal(total);
-//        tripTotalVO.setTripVO(tripVOList);
-        return null;
+        return tripTotalVO;
     }
 
     private Long getTripPageCount(TripPageParam tripPageParam, Session session) {

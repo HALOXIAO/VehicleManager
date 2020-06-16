@@ -1,6 +1,7 @@
 package com.vehicle;
 
 import com.vehicle.business.config.HibernateUtilConfig;
+import com.vehicle.business.module.Trip;
 import com.vehicle.common.status.DATABASE_COMMON_STATUS_CODE;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
@@ -27,13 +28,13 @@ public class NormalTest {
         Session session = HibernateUtilConfig.getSession();
         Transaction transaction = session.getTransaction();
         transaction.begin();
-        NativeQuery nativeQuery = session.createSQLQuery("SELECT COUNT(*) FROM bus_conf_trip p,bus_conf_route r WHERE p.status=1 AND p.route_id=r.id");
-//        nativeQuery.setParameter(1, DATABASE_COMMON_STATUS_CODE.NORMAL.getValue());
-        BigInteger count = nativeQuery.list() == null ? null : nativeQuery.list().size() == 1 ? (BigInteger) nativeQuery.list().get(0) : null;
+        Trip trip = new Trip();
+
+        trip.setId(3);
+        trip.setStatus(DATABASE_COMMON_STATUS_CODE.NORMAL.getValue());
+        session.update(trip);
         transaction.commit();
         session.close();
-        Objects.requireNonNull(count);
-        System.out.println(count);
 
 /*        Session session = HibernateUtilConfig.getSession();
         Transaction transaction = session.beginTransaction();
