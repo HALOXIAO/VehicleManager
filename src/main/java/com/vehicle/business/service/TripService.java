@@ -111,10 +111,9 @@ public class TripService {
         Trip trip = TripUpParamToTrip.INSTANCE.toTrip(tripUpdatedParam);
         trip.setDate(LocalDateTime.parse(tripUpdatedParam.getDate(), TIME_FORMATTER));
         trip.setStatus(DATABASE_COMMON_STATUS_CODE.NORMAL.getValue());
-        tripMapper.updateTrip(trip, session);
+        boolean flag = tripMapper.updateTrip(trip, session);
         SessionUtils.subsequentProcessing(session);
-
-        return true;
+        return flag;
     }
 
     public boolean deleteTrip(List<Integer> ids) {
@@ -130,6 +129,8 @@ public class TripService {
             SessionUtils.subsequentProcessing(session);
         } catch (Exception e) {
             log.error(Arrays.toString(e.getStackTrace()));
+            session.getTransaction().rollback();
+            throw e;
         }
         return true;
     }
@@ -140,7 +141,6 @@ public class TripService {
         session.setDefaultReadOnly(true);
         session.beginTransaction();
         List<Trip> tripVOList = tripMapper.getTripPage(tripPageParam);
-
         long total = getTripPageCount(tripPageParam, session);
         TripTotalVO tripTotalVO = new TripTotalVO();
         tripTotalVO.setTotal(total);
@@ -149,8 +149,6 @@ public class TripService {
 
     private Long getTripPageCount(TripPageParam tripPageParam, Session session) {
         return tripMapper.tripPageCount(tripPageParam, session);
-
-
     }
 
 }

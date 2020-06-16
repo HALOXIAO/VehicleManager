@@ -1,6 +1,7 @@
 package com.vehicle;
 
 import com.vehicle.business.config.HibernateUtilConfig;
+import com.vehicle.business.module.Driver;
 import com.vehicle.business.module.Trip;
 import com.vehicle.common.status.DATABASE_COMMON_STATUS_CODE;
 import org.hibernate.Session;
@@ -15,6 +16,7 @@ import java.io.IOException;
 import java.lang.reflect.Field;
 import java.math.BigInteger;
 import java.net.URL;
+import java.time.LocalDateTime;
 import java.util.*;
 
 /**
@@ -28,11 +30,20 @@ public class NormalTest {
         Session session = HibernateUtilConfig.getSession();
         Transaction transaction = session.getTransaction();
         transaction.begin();
-        Trip trip = new Trip();
+/*        Trip trip = new Trip();
 
-        trip.setId(3);
-        trip.setStatus(DATABASE_COMMON_STATUS_CODE.NORMAL.getValue());
-        session.update(trip);
+        trip.setId(28);
+        trip.setStatus(DATABASE_COMMON_STATUS_CODE.DELETE.getValue());
+        trip.setDate(LocalDateTime.now());
+        trip.setRouteId(1);
+        trip.setVehicleNumber("ADAWD");
+        trip.setSeats(213);
+        session.update(trip);*/
+        Driver d = new Driver();
+        Query query = session.createQuery("UPDATE  Driver   SET name=?1 WHERE id =47");
+        query.setParameter(1, "testasacq123");
+        int row = query.executeUpdate();
+        System.out.println(row);
         transaction.commit();
         session.close();
 

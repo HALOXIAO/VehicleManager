@@ -5,7 +5,7 @@
 
 <hibernate-mapping package="com.vehicle.business.module">
 
-    <class name="Driver" table="bus_conf_driver">
+    <class name="com.vehicle.business.module.Driver" table="bus_conf_driver">
         <id name="id" column="id" type="java.lang.Integer">
             <generator class="native"/>
         </id>
