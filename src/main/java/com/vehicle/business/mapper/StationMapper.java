@@ -48,7 +48,7 @@ public class StationMapper {
         return stations;
     }
 
-    public List<Station> getStationPage(Set<String> idSet,Session session) {
+    public List<Station> getStationPage(Set<String> idSet, Session session) {
         String temp = Arrays.toString(idSet.toArray()).replace("[", "").replace("]", "");
         NativeQuery nativeQuery = session.createSQLQuery("SELECT  id, name, address FROM bus_conf_station WHERE status=? AND id IN (?) ");
         nativeQuery.setParameter(1, DATABASE_COMMON_STATUS_CODE.NORMAL.getValue());
@@ -101,18 +101,18 @@ public class StationMapper {
         session.close();
     }
 
-    public void updateStation(List<Station> stationList) {
-        Session session = HibernateUtilConfig.getSession();
-        Transaction transaction = session.getTransaction();
-        transaction.begin();
-        stationList.forEach(session::update);
-        try {
-            transaction.commit();
-        } catch (Exception e) {
-            transaction.rollback();
-            throw new RuntimeException(Arrays.toString(e.getStackTrace()));
-        }
-        session.close();
+    public boolean updateStation(Station station, Session session) {
+        StringBuilder stringBuilder = new StringBuilder("UPDATE Station SET ");
+        Optional<String> addressOptional = Optional.ofNullable(station.getAddress());
+        addressOptional.ifPresent(p -> stringBuilder.append(" address=").append(p));
+        Optional<String> nameOptional = Optional.ofNullable(station.getName());
+        nameOptional.ifPresent(p -> stringBuilder.append(" name=").append(p));
+        Optional<Integer> statusOptional = Optional.ofNullable(station.getStatus());
+        statusOptional.ifPresent(p -> stringBuilder.append(" status=").append(p));
+        stringBuilder.append(" WHERE id=").append(station.getId());
+        Query query = session.createQuery(stringBuilder.toString());
+        int row = query.executeUpdate();
+        return row == 1;
     }
 
 

@@ -1,5 +1,6 @@
-package com.vehicle.business.mapper.strategy;
+package com.vehicle.business.mapper.strategy.impl;
 
+import com.vehicle.business.mapper.strategy.TripPageCountStrategy;
 import com.vehicle.business.module.param.TripPageParam;
 import com.vehicle.common.status.DATABASE_COMMON_STATUS_CODE;
 import org.hibernate.Session;

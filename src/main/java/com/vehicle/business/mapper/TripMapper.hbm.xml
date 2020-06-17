@@ -4,15 +4,15 @@
         "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
 
 <hibernate-mapping>
-    <class name="com.vehicle.business.module.Trip">
+    <class name="com.vehicle.business.module.Trip" table="bus_conf_trip">
         <id name="id" type="java.lang.Integer">
             <generator class="native"/>
         </id>
-        <property name="vehicleNumber" type="java.lang.String"/>
-        <property name="date" type="java.io.Serializable"/>
-        <property name="status" type="java.lang.Integer"/>
-        <property name="routeId" type="java.lang.Integer"/>
-        <property name="seats" type="java.lang.Integer"/>
+        <property name="vehicleNumber" type="java.lang.String" column="vehicle_number"/>
+        <property name="date" type="java.lang.String" column="date"/>
+        <property name="status" type="java.lang.Integer" column="status"/>
+        <property name="routeId" type="java.lang.Integer" column="route_id"/>
+        <property name="seats" type="java.lang.Integer" column="seats"/>
     </class>
 
 </hibernate-mapping>

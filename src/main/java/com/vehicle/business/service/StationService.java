@@ -1,5 +1,7 @@
 package com.vehicle.business.service;
 
+import com.vehicle.business.common.util.SessionUtils;
+import com.vehicle.business.config.HibernateUtilConfig;
 import com.vehicle.business.mapper.StationMapper;
 import com.vehicle.business.module.Station;
 import com.vehicle.business.module.convert.StationNameParamToStation;
@@ -12,14 +14,19 @@ import com.vehicle.business.module.vo.StationTotalVO;
 import com.vehicle.common.status.DATABASE_COMMON_STATUS_CODE;
 import com.vehicle.framework.core.annotation.Autowired;
 import com.vehicle.framework.core.annotation.Service;
+import lombok.extern.slf4j.Slf4j;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
  * @author HALOXIAO
  **/
 @Service
+@Slf4j
 public class StationService {
 
     @Autowired
@@ -43,18 +50,35 @@ public class StationService {
 
     public boolean updateStations(List<StationUpdatedParam> stationUpdatedParams) {
         List<Station> stationList = StationUpParamToStation.INSTANCE.toStationList(stationUpdatedParams);
-        stationMapper.updateStation(stationList);
+        Session session = HibernateUtilConfig.getSession();
+        Transaction transaction = session.beginTransaction();
+        stationList.forEach(station -> {
+            stationMapper.updateStation(station, session);
+        });
+        try {
+            SessionUtils.subsequentProcessing(session);
+        } catch (Exception e) {
+            log.error(Arrays.toString(e.getStackTrace()));
+            transaction.rollback();
+            throw e;
+        }
         return true;
     }
 
     public boolean deleteStations(List<Integer> ids) {
-        List<Station>stationList = new ArrayList<>(ids.size());
-        ids.forEach(id->{
-            Station station = new Station();
-            station.setStatus(DATABASE_COMMON_STATUS_CODE.DELETE.getValue());
-            stationList.add(station);
+        List<Station> stationList = new ArrayList<>(ids.size());
+        Session session = HibernateUtilConfig.getSession();
+        Transaction transaction =  session.beginTransaction();
+        stationList.forEach(station -> {
+            stationMapper.updateStation(station, session);
         });
-        stationMapper.updateStation(stationList);
+        try {
+            SessionUtils.subsequentProcessing(session);
+        } catch (Exception e) {
+            log.error(Arrays.toString(e.getStackTrace()));
+            transaction.rollback();
+            throw e;
+        }
         return true;
     }
 

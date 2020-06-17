@@ -15,6 +15,7 @@ import com.vehicle.business.module.param.TripPageParam;
 import com.vehicle.business.module.param.TripParam;
 import com.vehicle.business.module.param.TripUpdatedParam;
 import com.vehicle.business.module.vo.TripTotalVO;
+import com.vehicle.business.module.vo.TripVO;
 import com.vehicle.common.HTTP_METHOD;
 import com.vehicle.common.status.DATABASE_COMMON_STATUS_CODE;
 import com.vehicle.framework.core.annotation.Autowired;
@@ -27,6 +28,7 @@ import org.hibernate.query.Query;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -140,10 +142,13 @@ public class TripService {
         Session session = HibernateUtilConfig.getSession();
         session.setDefaultReadOnly(true);
         session.beginTransaction();
-        List<Trip> tripVOList = tripMapper.getTripPage(tripPageParam);
+        List<Trip> tripList = tripMapper.getTripPage(tripPageParam, session);
         long total = getTripPageCount(tripPageParam, session);
+        List<TripVO>TripVOList = new ArrayList<>();
         TripTotalVO tripTotalVO = new TripTotalVO();
+
         tripTotalVO.setTotal(total);
+        SessionUtils.subsequentProcessing(session);
         return tripTotalVO;
     }
 

@@ -2,21 +2,21 @@ package com.vehicle.business.mapper;
 
 import com.sun.istack.NotNull;
 import com.vehicle.business.common.util.DateTimeUtils;
-import com.vehicle.business.config.HibernateUtilConfig;
 import com.vehicle.business.mapper.strategy.*;
+import com.vehicle.business.mapper.strategy.impl.TripPageCountAllExistImpl;
+import com.vehicle.business.mapper.strategy.impl.TripPageCountAllNonImpl;
+import com.vehicle.business.mapper.strategy.impl.TripPageCountNonDateImpl;
+import com.vehicle.business.mapper.strategy.impl.TripPageCountNonRouteImpl;
 import com.vehicle.business.module.Trip;
 import com.vehicle.business.module.param.TripPageParam;
-import com.vehicle.business.module.vo.TripVO;
 import com.vehicle.framework.core.annotation.Repository;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Consumer;
 
 /**
  * @author HALOXIAO
@@ -25,11 +25,8 @@ import java.util.function.Consumer;
 public class TripMapper {
 
 
-    public List<Trip> getTripPage(TripPageParam tripPageParam) {
-        Session session = HibernateUtilConfig.getSession();
-        Transaction transaction = session.getTransaction();
-        transaction.begin();
-        Query query = session.createQuery("SELECT id,routeId,vehicleNumber FROM Trip ");
+    public List<Trip> getTripPage(TripPageParam tripPageParam, Session session) {
+
         return null;
     }
 
