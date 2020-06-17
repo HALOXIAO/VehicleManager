@@ -27,6 +27,11 @@ public class TripPageNonRouteImpl implements TripPageStrategy {
                 "ORDER BY id DESC LIMIT  ?4,1)  AND date> ?5 AND date<?6  LIMIT ?7) p,bus_conf_route r WHERE p.route_id = r.id ");
         query.setParameter(1, DATABASE_COMMON_STATUS_CODE.NORMAL.getValue());
         query.setParameter(2, startTime);
+        query.setParameter(3, endTime);
+        query.setParameter(4, tripPageParam.getPage());
+        query.setParameter(5, startTime);
+        query.setParameter(6, endTime);
+        query.setParameter(7, tripPageParam.getSize());
         return TripPageTransform.tripVOListTransform(query.list());
     }
 }
