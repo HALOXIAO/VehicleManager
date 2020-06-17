@@ -142,13 +142,12 @@ public class TripService {
         Session session = HibernateUtilConfig.getSession();
         session.setDefaultReadOnly(true);
         session.beginTransaction();
-        List<Trip> tripList = tripMapper.getTripPage(tripPageParam, session);
+        List<TripVO> tripList = tripMapper.getTripPage(tripPageParam, session);
         long total = getTripPageCount(tripPageParam, session);
-        List<TripVO>TripVOList = new ArrayList<>();
-        TripTotalVO tripTotalVO = new TripTotalVO();
-
-        tripTotalVO.setTotal(total);
         SessionUtils.subsequentProcessing(session);
+        TripTotalVO tripTotalVO = new TripTotalVO();
+        tripTotalVO.setTotal(total);
+        tripTotalVO.setTripVO(tripList);
         return tripTotalVO;
     }
 

@@ -3,12 +3,10 @@ package com.vehicle.business.mapper;
 import com.sun.istack.NotNull;
 import com.vehicle.business.common.util.DateTimeUtils;
 import com.vehicle.business.mapper.strategy.*;
-import com.vehicle.business.mapper.strategy.impl.TripPageCountAllExistImpl;
-import com.vehicle.business.mapper.strategy.impl.TripPageCountAllNonImpl;
-import com.vehicle.business.mapper.strategy.impl.TripPageCountNonDateImpl;
-import com.vehicle.business.mapper.strategy.impl.TripPageCountNonRouteImpl;
+import com.vehicle.business.mapper.strategy.impl.*;
 import com.vehicle.business.module.Trip;
 import com.vehicle.business.module.param.TripPageParam;
+import com.vehicle.business.module.vo.TripVO;
 import com.vehicle.framework.core.annotation.Repository;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
@@ -25,9 +23,20 @@ import java.util.Optional;
 public class TripMapper {
 
 
-    public List<Trip> getTripPage(TripPageParam tripPageParam, Session session) {
-
-        return null;
+    public List<TripVO> getTripPage(@NotNull TripPageParam tripPageParam, @NotNull Session session) {
+        if (tripPageParam.getDate() != null && tripPageParam.getRoute() != null) {
+            TripPageStrategy tripPage = new TripPageAllExistImpl();
+            return tripPage.tripPage(tripPageParam, session);
+        } else if (tripPageParam.getDate() == null && tripPageParam.getRoute() == null) {
+            TripPageStrategy tripPage = new TripPageAllNonImpl();
+            return tripPage.tripPage(tripPageParam, session);
+        } else if (tripPageParam.getRoute() != null) {
+            TripPageStrategy tripPage = new TripPageNonDateImpl();
+            return tripPage.tripPage(tripPageParam, session);
+        } else {
+            TripPageStrategy tripPage = new TripPageNonRouteImpl();
+            return tripPage.tripPage(tripPageParam, session);
+        }
     }
 
     public void addTrip(Trip trip, @NotNull Session session) {
