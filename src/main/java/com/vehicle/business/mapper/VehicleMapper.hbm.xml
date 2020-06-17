@@ -5,14 +5,14 @@
 
 <hibernate-mapping>
 
-    <class name="com.vehicle.business.module.Vehicle">
+    <class name="com.vehicle.business.module.Vehicle" table="bus_conf_vehicle">
         <id name="id" type="java.lang.Integer">
             <generator class="native"/>
         </id>
 
-        <property name="vehicleNumber" type="java.lang.String"/>
-        <property name="seatCount" type="java.lang.Integer"/>
-        <property name="vehicleModel" type="java.lang.String"/>
+        <property name="vehicleNumber" type="java.lang.String" column="vehicle_number"/>
+        <property name="seatCount" type="java.lang.Integer" column="seat_count"/>
+        <property name="vehicleModel" type="java.lang.String" column="vehicle_model"/>
     </class>
 
 

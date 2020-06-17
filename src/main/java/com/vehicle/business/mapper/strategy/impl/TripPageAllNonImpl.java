@@ -26,18 +26,6 @@ public class TripPageAllNonImpl implements TripPageStrategy {
         query.setParameter(1, DATABASE_COMMON_STATUS_CODE.NORMAL.getValue());
         query.setParameter(2, tripPageParam.getPage());
         query.setParameter(3, tripPageParam.getSize());
-        List<TripVO> tripVOList = new LinkedList<>();
-        Object[] temp = query.list().toArray();
-        for (Object object : temp) {
-            Object[] obj = (Object[]) object;
-            TripVO tripVO = new TripVO();
-            tripVO.setId((Integer) obj[0]);
-            tripVO.setVehicleNumber((String) obj[1]);
-            tripVO.setDate((String) obj[2]);
-            tripVO.setSeats((Integer) obj[3]);
-            tripVO.setRoute(new RouteSimpleVO((Integer) obj[4], (String) obj[5]));
-            tripVOList.add(tripVO);
-        }
-        return tripVOList;
+        return TripPageTransform.tripVOListTransform(query.list());
     }
 }

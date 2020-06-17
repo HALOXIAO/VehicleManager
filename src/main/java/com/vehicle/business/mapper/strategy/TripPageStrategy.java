@@ -13,5 +13,4 @@ public interface TripPageStrategy {
 
     List<TripVO> tripPage(TripPageParam tripPageParam, Session session);
 
-
 }
