@@ -34,8 +34,11 @@ public class StationService {
 
     public StationTotalVO getStationPage(PageParam pageParam) {
         pageParam.setPage(pageParam.getPage() - 1);
-        List<Station> stationList = stationMapper.getStationPage(pageParam);
-        Long count = stationMapper.countStation();
+        Session session = HibernateUtilConfig.getSession();
+        session.beginTransaction();
+        List<Station> stationList = stationMapper.getStationPage(pageParam,session);
+        Long count = stationMapper.countStation(session);
+        SessionUtils.subsequentProcessing(session);
         return new StationTotalVO(StationToStationVO.INSTANCE.toStationVOList(stationList), count);
     }
 

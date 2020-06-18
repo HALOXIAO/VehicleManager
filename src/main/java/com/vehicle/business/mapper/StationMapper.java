@@ -24,19 +24,13 @@ import java.util.*;
 public class StationMapper {
 
 
-    public List<Station> getStationPage(PageParam pageParam) {
-        Session session = HibernateUtilConfig.getSession();
-        Transaction transaction = session.getTransaction();
-        transaction.begin();
-
+    public List<Station> getStationPage(PageParam pageParam, Session session) {
         Query nativeQuery = session.createQuery("SELECT id ,name,address FROM Station WHERE status=?1");
         nativeQuery.setParameter(1, DATABASE_COMMON_STATUS_CODE.NORMAL.getValue());
         nativeQuery.setMaxResults(pageParam.getSize());
         nativeQuery.setFirstResult(pageParam.getPage());
-        transaction.commit();
         Object[] obj = nativeQuery.list().toArray();
         List<Station> stations = new ArrayList<>(nativeQuery.list().size());
-        session.close();
         for (Object object : obj) {
             Object[] temp = (Object[]) object;
             Station station = new Station();
@@ -53,22 +47,24 @@ public class StationMapper {
         NativeQuery nativeQuery = session.createSQLQuery("SELECT  id, name, address FROM bus_conf_station WHERE status=? AND id IN (?) ");
         nativeQuery.setParameter(1, DATABASE_COMMON_STATUS_CODE.NORMAL.getValue());
         nativeQuery.setParameter(2, temp);
-        nativeQuery.addEntity(Station.class);
-        List<Station> stations = new ArrayList<>();
         Object[] obj = nativeQuery.list().toArray();
+        List<Station> stations = new ArrayList<>(nativeQuery.list().size());
+        for (Object object : obj) {
+            Object[] par = (Object[]) object;
+            Station station = new Station();
+            station.setId((Integer) par[0]);
+            station.setName((String) par[1]);
+            station.setAddress((String) par[2]);
+            stations.add(station);
+        }
 
         return stations;
     }
 
-    public Long countStation() {
-        Session session = HibernateUtilConfig.getSession();
-        Transaction transaction = session.getTransaction();
-        transaction.begin();
+    public Long countStation(Session session) {
         NativeQuery nativeQuery = session.createSQLQuery("SELECT COUNT(*)FROM bus_conf_station WHERE status=?");
         nativeQuery.setParameter(1, DATABASE_COMMON_STATUS_CODE.NORMAL.getValue());
-        transaction.commit();
         BigInteger count = nativeQuery.list() == null ? null : nativeQuery.list().size() == 1 ? (BigInteger) nativeQuery.list().get(0) : null;
-        session.close();
         Objects.requireNonNull(count);
         return count.longValue();
     }

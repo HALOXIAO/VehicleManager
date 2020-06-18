@@ -1,15 +1,15 @@
 package com.vehicle.business.security;
 
+import com.vehicle.container.annotation.WebFilter;
+
 import javax.servlet.*;
-import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.logging.LogRecord;
 
 /**
  * @author HALOXIAO
  **/
-@WebFilter("/*")
+@WebFilter(urlPattern = "/*",order = 10)
 public class PreFilter01_Cors implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
@@ -18,7 +18,7 @@ public class PreFilter01_Cors implements Filter {
         res.setHeader("Access-Control-Allow-Methods", "POST, GET, OPTIONS, DELETE, PUT");
         res.setHeader("Access-Control-Max-Age", "3600");
         res.setHeader("Access-Control-Allow-Headers", "Authorization, Content-Type, Accept, x-requested-with, Cache-Control");
-        res.setHeader("Access-Control-Allow-Credentials","true");
+        res.setHeader("Access-Control-Allow-Credentials", "true");
         chain.doFilter(request, res);
     }
 }

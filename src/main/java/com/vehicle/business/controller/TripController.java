@@ -38,7 +38,7 @@ public class TripController {
         return new ResultBean<>("success", RESULT_BEAN_STATUS_CODE.SUCCESS);
     }
 
-    @RequestMapping("/trip")
+    @RequestMapping(value = "/trip",method = HTTP_METHOD.HTTP_PUT)
     public ResultBean<Boolean> updateTrip(@RequestBody  TripUpdatedParam tripUpdatedParam) {
         if (!tripService.updateTrip(tripUpdatedParam)) {
             return new ResultBean<>("fail", RESULT_BEAN_STATUS_CODE.UNKNOWN_EXCEPTION);

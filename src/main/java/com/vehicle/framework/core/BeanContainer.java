@@ -132,48 +132,6 @@ public class BeanContainer {
         isLoad = true;
     }
 
-/**
- * (还没搞完，别调用)
- * 自动注入功能
- *
- * @param packageUrl 扫描的包路径
- */
-/*
-    @Deprecated
-    //  TODO Autowired 需要注意的地方：1：循环依赖判断、2：依赖的嵌套初始化、3：优化代码结构
-    public void loadAutowired1(String packageUrl) {
-        if (!isLoad) {
-            throw new ClassNotLoadException("class not load,can not autowired");
-        }
-        Set<Class<?>> classes = ClassUtil.getPackageClass(packageUrl);
-        classes.stream().filter(clz -> {
-                    for (Class<? extends Annotation> annotation : BEAN_ANNOTATION) {
-                        if (clz.isAnnotationPresent(annotation)) {
-                            for (Field field : clz.getDeclaredFields()) {
-                                for (Class<? extends Annotation> wiredAnnotation : WIRED_ANNOTATION) {
-                                    if (field.isAnnotationPresent(wiredAnnotation)) {
-                                        if (null == application.get(clz)) {
-                                            log.warn("field class not load:" + field.getType().getName());
-                                            throw new ClassNotLoadException("field class not load:" + field.getType().getName());
-                                        }
-                                    }
-                                }
-                            }
-                            return true;
-                        }
-                    }
-                    return false;
-                }
-        ).forEach(clz -> {
-            for (Field field : clz.getDeclaredFields()) {
-                for (Class<? extends Annotation> wiredAnnotation : WIRED_ANNOTATION) {
-                    if (field.isAnnotationPresent(wiredAnnotation)) {
-//                        TODO
-                    }
-                }
-            }
-        });
-    }*/
 
 
 }

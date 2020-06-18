@@ -15,7 +15,7 @@ import java.util.Vector;
  **/
 @Slf4j
 public class ApplicationBootstrap {
-    public static void main(String[] args) throws IOException, LifecycleException, InvocationTargetException, IllegalAccessException, ServletException {
+    public static void main(String[] args) throws IOException, LifecycleException, InvocationTargetException, IllegalAccessException, ServletException, NoSuchMethodException, InstantiationException {
         Bootstrap.bootstrap(args);
     }
 

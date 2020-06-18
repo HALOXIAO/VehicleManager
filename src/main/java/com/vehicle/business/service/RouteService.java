@@ -40,6 +40,7 @@ public class RouteService {
     public StationMapper stationMapper;
 
     public List<RouteVO> getRoutePage(PageParam pageParam) {
+        pageParam.setPage(pageParam.getPage() * pageParam.getSize() - 1);
         Session session = HibernateUtilConfig.getSession();
         session.beginTransaction();
         session.setDefaultReadOnly(true);
@@ -84,7 +85,7 @@ public class RouteService {
 
     public RouteVO getRoute(Integer id) {
         Session session = HibernateUtilConfig.getSession();
-        Transaction transaction = session.beginTransaction();
+        session.beginTransaction();
         session.setDefaultReadOnly(true);
         Route route = routeMapper.getRoute(id, session);
         RouteVO result = new RouteVO();

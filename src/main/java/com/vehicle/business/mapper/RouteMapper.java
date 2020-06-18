@@ -12,6 +12,7 @@ import org.hibernate.query.NativeQuery;
 import org.hibernate.query.Query;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -22,10 +23,20 @@ import java.util.Objects;
 public class RouteMapper {
     public List<Route> getRoutePage(PageParam pageParam, @NotNull Session session) {
         Query routeQuery = session.createQuery("SELECT id,  detail, name  from Route WHERE status=?1 ");
-        routeQuery.setParameter(1, DATABASE_COMMON_STATUS_CODE.NORMAL);
+        routeQuery.setParameter(1, DATABASE_COMMON_STATUS_CODE.NORMAL.getValue());
         routeQuery.setMaxResults(pageParam.getSize());
         routeQuery.setFirstResult(pageParam.getPage());
-        return routeQuery.getResultList();
+        Object[] temp = routeQuery.list().toArray();
+        List<Route> routeList = new ArrayList<>(temp.length);
+        for (Object obj : temp) {
+            Object[] object = (Object[]) obj;
+            Route route = new Route();
+            route.setId((Integer) object[0]);
+            route.setDetail((String) object[1]);
+            route.setName((String) object[2]);
+            routeList.add(route);
+        }
+        return routeList;
     }
 
     public Long routeCount() {

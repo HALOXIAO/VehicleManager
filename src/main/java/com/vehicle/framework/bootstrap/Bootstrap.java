@@ -15,11 +15,11 @@ import java.lang.reflect.InvocationTargetException;
  * @author HALOXIAO
  **/
 public class Bootstrap {
-    public static void bootstrap(String[] args) throws InvocationTargetException, IllegalAccessException, IOException, LifecycleException, ServletException {
+    public static void bootstrap(String[] args) throws InvocationTargetException, IllegalAccessException, IOException, LifecycleException, ServletException, NoSuchMethodException, InstantiationException {
         BeanContainerFactory.getBeanContainer().loadBean(ApplicationBootstrap.class.getPackage().getName());
         new BeanConfiguration();
         new AutowiredAnnotationBeanPostProcessor().loadAutowired(ApplicationBootstrap.class.getPackage().getName());
-        new TomcatContainer().startUp();
+        new TomcatContainer().startUp(ApplicationBootstrap.class.getPackage().getName());
     }
 
 }

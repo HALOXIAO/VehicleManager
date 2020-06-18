@@ -108,19 +108,20 @@ public class HandlerMapping implements Handler {
                 Set<String> tempSet = parameterMap.keySet();
                 Parameter[] parameters = controllerInfo.getInvokeMethod().getParameters();
                 Iterator<String> iterator = tempSet.iterator();
+                int count = 0;
                 while (iterator.hasNext()) {
                     String paramName = iterator.next();
                     String temp = request.getParameter(paramName);
-                    for (; ; ) {
-                        for (Parameter parameter : parameters) {
-                            if (temp == null && parameter.getAnnotation(RequestParam.class).require()) {
-                                throw new UserRequestException("bad request");
-                            }
-                        }
-                        break;
+                    if (temp == null && parameters[count].getAnnotation(RequestParam.class).require()) {
+                        throw new UserRequestException("bad request");
                     }
+                    count ++;
                     if (!parameterMap.get(paramName).equals(String.class)) {
-                        parameterList.add(Integer.valueOf(temp));
+                        if (temp != null) {
+                            parameterList.add(Integer.valueOf(temp));
+                        }else{
+                            parameterList.add(null);
+                        }
                     } else {
                         parameterList.add(temp);
                     }
@@ -129,7 +130,6 @@ public class HandlerMapping implements Handler {
                 return controllerInfo.getInvokeMethod().invoke(obj, parameterList.toArray());
 
             } else {
-//                @ResultBody
                 BufferedReader reader = new BufferedReader(new InputStreamReader(requestChain.getHttpServletRequest().getInputStream(), StandardCharsets.UTF_8));
                 StringBuilder builder = new StringBuilder();
                 String line;

@@ -20,7 +20,7 @@ public class IllegalArgumentExceptionRender implements ExceptionRender {
 
     @Override
     public void handler(RequestChain requestChain, Exception e) {
-        if (!e.getCause().getClass().equals(e.getClass())) {
+        if (!e.getClass().equals(IllegalArgumentException.class)) {
             return;
         }
         log.warn(Arrays.toString(e.getStackTrace()));

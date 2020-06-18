@@ -138,7 +138,7 @@ public class TripService {
     }
 
     public TripTotalVO getTripPage(TripPageParam tripPageParam) {
-        tripPageParam.setPage(((tripPageParam.getPage() - 1) * tripPageParam.getSize()));
+        tripPageParam.setPage((tripPageParam.getPage() * tripPageParam.getSize() - 1));
         Session session = HibernateUtilConfig.getSession();
         session.setDefaultReadOnly(true);
         session.beginTransaction();

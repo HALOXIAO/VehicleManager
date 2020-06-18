@@ -1,5 +1,6 @@
 package com.vehicle.framework.mvc;
 
+import com.vehicle.common.HTTP_METHOD;
 import com.vehicle.framework.exception.UrlNotFoundException;
 import com.vehicle.framework.mvc.handle.Handler;
 import com.vehicle.framework.mvc.handle.HandlerAdapter;
@@ -18,6 +19,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -27,7 +29,7 @@ import java.util.List;
  * @author HALOXIAO
  **/
 @Slf4j
-@WebServlet("/qweqwe")
+@WebServlet("/*")
 public class DispatcherServlet extends HttpServlet {
 
     private final List<Handler> HANDLER = new ArrayList<>();
@@ -47,6 +49,13 @@ public class DispatcherServlet extends HttpServlet {
 
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        if (request.getMethod().equals(HTTP_METHOD.HTTP_OPTIONS)) {
+            response.setStatus(HttpServletResponse.SC_OK);
+            try (PrintWriter printWriter = response.getWriter()) {
+                printWriter.flush();
+            }
+            return;
+        }
         RequestChain requestChain = assembleRChain(request, response);
         Iterator<Handler> iterator = HANDLER.iterator();
         Object obj = null;
