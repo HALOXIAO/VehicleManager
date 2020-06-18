@@ -46,11 +46,33 @@ public class RouteMapper {
         SessionUtils.subsequentProcessing(session);
     }
 
-    public void updateRoute(Route route) {
-        Session session = HibernateUtilConfig.getSession();
-        session.beginTransaction();
-        session.update(route);
-        SessionUtils.subsequentProcessing(session);
+    public boolean updateRoute(Route route, Session session) {
+        StringBuilder hqlBuilder = new StringBuilder("UPDATE Route SET ");
+        hqlBuilder.append(route.getStartId() != null ? " startId=?1 ," : "");
+        hqlBuilder.append(route.getEndId() != null ? " endId=?2 ," : "");
+        hqlBuilder.append(route.getDetail() != null ? " detail=?3 ," : "");
+        hqlBuilder.append(route.getName() != null ? " name=?4 ," : "");
+        hqlBuilder.append(route.getStatus() != null ? " status=?5 ," : "");
+        hqlBuilder.deleteCharAt(hqlBuilder.lastIndexOf(","));
+        hqlBuilder.append("WHERE id=?6");
+        Query query = session.createQuery(hqlBuilder.toString());
+        if (route.getStartId() != null) {
+            query.setParameter(1, route.getStartId());
+        }
+        if (route.getEndId() != null) {
+            query.setParameter(2, route.getEndId());
+        }
+        if (route.getDetail() != null) {
+            query.setParameter(3, route.getDetail());
+        }
+        if (route.getName() != null) {
+            query.setParameter(4, route.getName());
+        }
+        if (route.getStatus() != null) {
+            query.setParameter(5, route.getStatus());
+        }
+        query.setParameter(6, route.getId());
+        return query.executeUpdate() == 1;
     }
 
     public void deleteRoutes(List<Integer> ids) {

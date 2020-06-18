@@ -101,14 +101,16 @@ public class RouteService {
     }
 
     public boolean updateRoute(RouteUpdatedParam routeParam) {
-        routeMapper.updateRoute(RouteUpParamToRoute.toRoute(routeParam));
-        return true;
+        Session session = HibernateUtilConfig.getSession();
+        session.beginTransaction();
+        boolean flag = routeMapper.updateRoute(RouteUpParamToRoute.toRoute(routeParam), session);
+        SessionUtils.subsequentProcessing(session);
+        return flag;
     }
 
     public boolean deleteRoutes(List<Integer> ids) {
         routeMapper.deleteRoutes(ids);
         return true;
-
     }
 
 

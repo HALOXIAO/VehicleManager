@@ -104,13 +104,24 @@ public class StationMapper {
     public boolean updateStation(Station station, Session session) {
         StringBuilder stringBuilder = new StringBuilder("UPDATE Station SET ");
         Optional<String> addressOptional = Optional.ofNullable(station.getAddress());
-        addressOptional.ifPresent(p -> stringBuilder.append(" address=").append(p));
+        addressOptional.ifPresent(p -> stringBuilder.append(" address=?1 ,"));
         Optional<String> nameOptional = Optional.ofNullable(station.getName());
-        nameOptional.ifPresent(p -> stringBuilder.append(" name=").append(p));
+        nameOptional.ifPresent(p -> stringBuilder.append(" name=?2 ,"));
         Optional<Integer> statusOptional = Optional.ofNullable(station.getStatus());
-        statusOptional.ifPresent(p -> stringBuilder.append(" status=").append(p));
-        stringBuilder.append(" WHERE id=").append(station.getId());
+        statusOptional.ifPresent(p -> stringBuilder.append(" status=?3 ,"));
+        stringBuilder.deleteCharAt(stringBuilder.lastIndexOf(","));
+        stringBuilder.append(" WHERE id=?4");
         Query query = session.createQuery(stringBuilder.toString());
+        if (addressOptional.isPresent()) {
+            query.setParameter(1, station.getAddress());
+        }
+        if (nameOptional.isPresent()) {
+            query.setParameter(2, station.getName());
+        }
+        if (statusOptional.isPresent()) {
+            query.setParameter(3, station.getStatus());
+        }
+        query.setParameter(4, station.getId());
         int row = query.executeUpdate();
         return row == 1;
     }

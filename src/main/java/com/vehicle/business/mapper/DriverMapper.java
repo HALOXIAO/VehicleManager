@@ -13,6 +13,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * @author HALOXIAO
@@ -32,15 +33,29 @@ public class DriverMapper {
     }
 
 
-    public void updateDriverBatch(List<Driver> drivers) {
-        Session session = HibernateUtilConfig.getSession();
-        Transaction transaction = session.getTransaction();
-        transaction.begin();
+    public void updateDriverBatch(List<Driver> drivers, Session session) {
+        Query query = null;
         for (Driver driver : drivers) {
-            session.update(driver);
+            StringBuilder HQL = new StringBuilder("UPDATE Driver  SET ");
+            Optional<String> nameOption = Optional.ofNullable(driver.getName());
+            nameOption.ifPresent(p -> HQL.append(" name=?1 ").append(","));
+            Optional<BigDecimal> salaryOption = Optional.ofNullable(driver.getSalary());
+            salaryOption.ifPresent(p -> HQL.append(" salary=?2 ").append(","));
+            HQL.deleteCharAt(HQL.lastIndexOf(","));
+            HQL.append(" WHERE id=?3 ");
+            query = session.createQuery(HQL.toString());
+            if (nameOption.isPresent()) {
+                query.setParameter(1, driver.getName());
+            }
+            if (salaryOption.isPresent()) {
+                query.setParameter(2, driver.getSalary());
+            }
+            query.setParameter(3, driver.getId());
+            session.flush();
         }
-        transaction.commit();
-        session.close();
+        if (query != null) {
+            query.executeUpdate();
+        }
     }
 
     public List<Driver> getDriverPage(PageParam pageParam) {
@@ -54,11 +69,11 @@ public class DriverMapper {
         transaction.commit();
         List<Driver> resultList = new ArrayList<>(driverQuery.list().size());
         session.close();
-        for (Object object :obj){
-            Object[] temp = (Object[])object;
+        for (Object object : obj) {
+            Object[] temp = (Object[]) object;
             Driver driver = new Driver();
             driver.setId((Integer) temp[0]);
-            driver.setName((String)temp[1]);
+            driver.setName((String) temp[1]);
             driver.setSalary((BigDecimal) temp[2]);
             resultList.add(driver);
         }
@@ -75,7 +90,7 @@ public class DriverMapper {
         session.close();
         BigInteger count = driverQuery.list() == null ? null : driverQuery.list().size() == 1 ? (BigInteger) driverQuery.list().get(0) : null;
         return count.longValue();
-        }
+    }
 
 
     public void deleteDriverBatch(List<Integer> ids) {

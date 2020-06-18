@@ -24,9 +24,9 @@ import java.util.List;
 public class RouteController {
 
     @Autowired
-   public RouteService routeService;
+    public RouteService routeService;
 
-    @RequestMapping(value = "/route",method = HTTP_METHOD.HTTP_POST)
+    @RequestMapping(value = "/route", method = HTTP_METHOD.HTTP_POST)
     public ResultBean<Boolean> addRoute(@RequestBody RouteParam routeParam) {
         if (routeService.addRoute(routeParam).getId() != null) {
             return new ResultBean<>("fail", RESULT_BEAN_STATUS_CODE.UNKNOWN_EXCEPTION);
@@ -35,15 +35,15 @@ public class RouteController {
     }
 
 
-    @RequestMapping(value = "/route",method = HTTP_METHOD.HTTP_PUT)
+    @RequestMapping(value = "/route", method = HTTP_METHOD.HTTP_PUT)
     public ResultBean<Boolean> updateRoute(@RequestBody RouteUpdatedParam routeUpdatedParam) {
         if (!routeService.updateRoute(routeUpdatedParam)) {
-            return new ResultBean<>("fail", RESULT_BEAN_STATUS_CODE.UNKNOWN_EXCEPTION);
+            return new ResultBean<>("route does not exist", RESULT_BEAN_STATUS_CODE.ARGUMENT_EXCEPTION);
         }
         return new ResultBean<>("success", RESULT_BEAN_STATUS_CODE.SUCCESS);
     }
 
-    @RequestMapping(value = "/route",method = HTTP_METHOD.HTTP_DELETE)
+    @RequestMapping(value = "/route", method = HTTP_METHOD.HTTP_DELETE)
     public ResultBean<Boolean> deleteRoute(@RequestBody List<Integer> ids) {
 //        if (!ArgumentCheck.checkIds(ids)) {
 //            return new ResultBean<>("argument", RESULT_BEAN_STATUS_CODE.ARGUMENT_EXCEPTION);
@@ -68,13 +68,12 @@ public class RouteController {
     }
 
     @RequestMapping("/route/detail")
-    public ResultBean<RouteVO> getRoute(@RequestParam("id")  Integer id) {
+    public ResultBean<RouteVO> getRoute(@RequestParam("id") Integer id) {
         RouteVO routeVO = routeService.getRoute(id);
         ResultBean<RouteVO> bean = new ResultBean<>("success", RESULT_BEAN_STATUS_CODE.SUCCESS);
         bean.setData(routeVO);
         return bean;
     }
-
 
 
 }

@@ -1,5 +1,7 @@
 package com.vehicle.business.service;
 
+import com.vehicle.business.common.util.SessionUtils;
+import com.vehicle.business.config.HibernateUtilConfig;
 import com.vehicle.business.mapper.DriverMapper;
 import com.vehicle.business.module.Driver;
 import com.vehicle.business.module.convert.DriverToDriverVo;
@@ -8,6 +10,8 @@ import com.vehicle.business.module.vo.DriverTotalVO;
 import com.vehicle.business.module.vo.DriverVO;
 import com.vehicle.framework.core.annotation.Autowired;
 import com.vehicle.framework.core.annotation.Service;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 import java.util.List;
 
@@ -26,7 +30,10 @@ public class DriverService {
     }
 
     public void updateDrivers(List<Driver> drivers) {
-        driverMapper.updateDriverBatch(drivers);
+        Session session = HibernateUtilConfig.getSession();
+        session.beginTransaction();
+        driverMapper.updateDriverBatch(drivers, session);
+        SessionUtils.subsequentProcessing(session);
     }
 
     public DriverTotalVO getDriversPage(PageParam pageParam) {
