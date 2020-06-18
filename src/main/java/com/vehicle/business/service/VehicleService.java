@@ -64,6 +64,7 @@ public class VehicleService {
     }
 
     public VehicleTotalVO getVehiclePage(PageParam pageParam) {
+        pageParam.setPage(pageParam.getPage() * pageParam.getSize() - 1);
         Session session = HibernateUtilConfig.getSession();
         session.beginTransaction();
         List<Vehicle> vehicleList = vehicleMapper.getVehiclePage(pageParam, session);

@@ -55,5 +55,6 @@
         <mapping resource="com/vehicle/business/mapper/RouteMapper.hbm.xml"/>
         <mapping resource="com/vehicle/business/mapper/VehicleMapper.hbm.xml"/>
         <mapping resource="com/vehicle/business/mapper/TripMapper.hbm.xml"/>
+        <mapping resource="com/vehicle/business/mapper/UserMapper.hbm.xml"/>
     </session-factory>
 </hibernate-configuration>

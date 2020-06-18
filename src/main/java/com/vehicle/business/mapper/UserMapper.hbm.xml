@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.vehicle.business.module.User" table="bus_sec_user">
+        <id name="id" column="id" type="java.lang.Integer">
+            <generator class="native"/>
+        </id>
+        <property name="userName" column="username" type="java.lang.String"/>
+        <property name="passWord" column="password" type="java.lang.String"/>
+    </class>
+
+
+</hibernate-mapping>

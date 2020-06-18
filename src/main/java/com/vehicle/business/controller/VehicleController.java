@@ -30,19 +30,18 @@ public class VehicleController {
     @Autowired
     public VehicleService vehicleService;
 
-    //TODO 注意为null
     @RequestMapping(value = "/manage/vehicle", method = HTTP_METHOD.HTTP_DELETE)
     public ResultBean<Boolean> deleteVehicle(@RequestBody List<Integer> ids) {
-
+        vehicleService.deleteVehicle(ids);
         return new ResultBean<>("success", RESULT_BEAN_STATUS_CODE.SUCCESS);
     }
 
     @RequestMapping("/manage/vehicle")
     public ResultBean<VehicleTotalVO> getVehiclePage(@RequestParam("page") Integer page, @RequestParam("size") Integer size) {
         PageParam pageParam = new PageParam(page, size);
-        vehicleService.getVehiclePage(pageParam);
+        VehicleTotalVO result = vehicleService.getVehiclePage(pageParam);
         ResultBean<VehicleTotalVO> bean = new ResultBean<>("success", RESULT_BEAN_STATUS_CODE.SUCCESS);
-
+        bean.setData(result);
         return bean;
     }
 

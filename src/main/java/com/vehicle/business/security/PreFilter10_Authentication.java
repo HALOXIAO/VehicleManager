@@ -3,9 +3,9 @@ package com.vehicle.business.security;
 import com.alibaba.fastjson.JSON;
 import com.vehicle.common.RESULT_BEAN_STATUS_CODE;
 import com.vehicle.common.ResultBean;
+import com.vehicle.container.annotation.WebFilter;
 
 import javax.servlet.*;
-import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -15,9 +15,9 @@ import java.io.PrintWriter;
 /**
  * @author HALOXIAO
  **/
-//@WebFilter(urlPatterns = "/*")
-public class PreFilter10_Authentication  {
-/*    @Override
+@WebFilter(urlPattern = "/*", order = Integer.MIN_VALUE)
+public class PreFilter10_Authentication implements Filter {
+    @Override
     public void doFilter(ServletRequest res, ServletResponse rep, FilterChain chain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) res;
         HttpServletResponse response = (HttpServletResponse) rep;
@@ -33,5 +33,5 @@ public class PreFilter10_Authentication  {
             }
         }
         chain.doFilter(request, response);
-    }*/
+    }
 }
