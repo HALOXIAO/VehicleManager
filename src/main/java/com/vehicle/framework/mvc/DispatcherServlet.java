@@ -49,13 +49,11 @@ public class DispatcherServlet extends HttpServlet {
 
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if (request.getMethod().equals(HTTP_METHOD.HTTP_OPTIONS)) {
-            response.setStatus(HttpServletResponse.SC_OK);
-            try (PrintWriter printWriter = response.getWriter()) {
-                printWriter.flush();
-            }
+        if (OptionsHandler(request, response)) {
             return;
         }
+
+
         RequestChain requestChain = assembleRChain(request, response);
         Iterator<Handler> iterator = HANDLER.iterator();
         Object obj = null;
@@ -88,5 +86,17 @@ public class DispatcherServlet extends HttpServlet {
                 .setResultBean(null)
                 .setRequestPath(requestPath);
     }
+
+    private boolean OptionsHandler(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        if (request.getMethod().equals(HTTP_METHOD.HTTP_OPTIONS)) {
+            response.setStatus(HttpServletResponse.SC_OK);
+            try (PrintWriter printWriter = response.getWriter()) {
+                printWriter.flush();
+            }
+            return true;
+        }
+        return false;
+    }
+
 
 }

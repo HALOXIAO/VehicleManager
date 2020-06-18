@@ -1,6 +1,7 @@
 package com.vehicle.business.common.util;
 
 import com.sun.istack.NotNull;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.hibernate.Session;
 
 /**
@@ -13,5 +14,10 @@ public class SessionUtils {
             session.getTransaction().commit();
         }
     }
+
+    public static String createSession(int length){
+       return  RandomStringUtils.randomAlphanumeric(length);
+    }
+
 
 }
